@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindU", "FindU\FindU.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindU.WebSite", "FindU.WebSite\FindU.WebSite.csproj", "{1B1B4CF8-BB94-40EE-9B58-7911C985E09A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ufba.IdentityServer", "Ufba.IdentityServer\Ufba.IdentityServer.csproj", "{CC7216E5-E8AC-4B59-9118-2D0D8C26F47D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B1B4CF8-BB94-40EE-9B58-7911C985E09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B1B4CF8-BB94-40EE-9B58-7911C985E09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B1B4CF8-BB94-40EE-9B58-7911C985E09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC7216E5-E8AC-4B59-9118-2D0D8C26F47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC7216E5-E8AC-4B59-9118-2D0D8C26F47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC7216E5-E8AC-4B59-9118-2D0D8C26F47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC7216E5-E8AC-4B59-9118-2D0D8C26F47D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
