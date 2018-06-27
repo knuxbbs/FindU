@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Linq;
 
 namespace Ufba.IdentityServer
@@ -16,19 +15,15 @@ namespace Ufba.IdentityServer
 			services.AddMvc();
 
 			services.AddIdentityServer()
-					.AddTemporarySigningCredential()
-					.AddInMemoryClients(IdentityServerConfiguration.GetClientScope())
-					.AddInMemoryApiResources(IdentityServerConfiguration.GetApiResources())
+					.AddDeveloperSigningCredential()
 					.AddInMemoryIdentityResources(IdentityServerConfiguration.GetIdentityResources())
+					.AddInMemoryClients(IdentityServerConfiguration.GetClientScope())
 					.AddTestUsers(IdentityServerConfiguration.GetUsers().ToList());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
-
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
