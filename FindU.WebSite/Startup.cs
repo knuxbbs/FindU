@@ -65,6 +65,14 @@ namespace FindU.WebSite
 				//Adicionamos o escopo do e-mail para utilizarmos a claim de e-mail.
 				//options.Scope.Add(IdentityServerConstants.StandardScopes.Email);
 				options.Scope.Add("email");
+			})
+			.AddFacebook(facebookOptions =>
+			{
+				//facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+				//facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+
+				facebookOptions.AppId = "999621133527975";
+				facebookOptions.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
 			});
 
 			// Register no-op EmailSender used by account confirmation and password reset during development

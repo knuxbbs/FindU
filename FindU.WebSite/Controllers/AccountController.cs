@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +6,7 @@ using FindU.WebSite.Data;
 
 namespace FindU.WebSite.Controllers
 {
-    [Route("[controller]/[action]")]
+	[Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,7 +11,7 @@ using FindU.WebSite.Data;
 
 namespace FindU.WebSite.Pages.Account
 {
-    public class LoginModel : PageModel
+	public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
