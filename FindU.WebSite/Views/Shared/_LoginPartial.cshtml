@@ -1,0 +1,8 @@
+@using FindU.Infra.Data.Identity.Configuration
+@inject ApplicationSignInManager SignInManager
+
+<ul class="nav navbar-nav navbar-right">
+	<li>
+		@await Component.InvokeAsync("LoginPanel")
+	</li>
+</ul>

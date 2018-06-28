@@ -1,0 +1,23 @@
+﻿@model LoginViewModel
+
+<form asp-controller="Account" asp-action="Login" method="post" class="navbar-form">
+	<ul class="nav navbar-nav">
+		<li>
+			<div class="form-group has-feedback">
+				<input id="account-email" asp-for="Email" type="text" class="form-control navbar-input" placeholder="E-mail">
+				<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			</div>
+		</li>
+		<li>
+			<div class="input-group">
+				<div class="form-group has-feedback">
+					<input id="account-password" asp-for="Password" type="password" class="form-control navbar-input" placeholder="Senha">
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-default">Login</button>
+				</span>
+			</div>
+		</li>
+	</ul>
+</form>

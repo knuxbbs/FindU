@@ -1,12 +1,14 @@
+Ôªøusing System.IdentityModel.Tokens.Jwt;
+using FindU.Infra.Data;
+using FindU.Infra.Data.Identity.Configuration;
+using FindU.Infra.Data.Identity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using FindU.WebSite.Data;
 using FindU.WebSite.Services;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace FindU.WebSite
 {
@@ -25,59 +27,63 @@ namespace FindU.WebSite
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddIdentity<ApplicationUser, IdentityRole>()
+			services.AddIdentity<ApplicationUser, ApplicationRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddMvc()
-				.AddRazorPagesOptions(options =>
-				{
-					options.Conventions.AuthorizeFolder("/Account/Manage");
-					options.Conventions.AuthorizePage("/Account/Logout");
-				});
+			services.AddScoped<ApplicationUserManager>();
+			services.AddScoped<ApplicationRoleManager>();
+			services.AddScoped<ApplicationSignInManager>();
 
-			//Exibe as claims de maneira mais "amig·vel"
+			//Exibe as claims de maneira mais "amig√°vel"
 			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-			//Adiciona o serviÁo de autenticaÁ„o
+			//Adiciona o servi√ßo de autentica√ß√£o
 			services.AddAuthentication(options =>
 			{
-				//Nosso esquema default ser· baseado em cookie
+				//Nosso esquema default ser√° baseado em cookie
 				options.DefaultScheme = "Cookies";
 
-				//Como precisamos recuperar os dados depois do login, utilizamos o OpenID Connect que por padr„o utiliza o escopo do Profile
+				//Como precisamos recuperar os dados depois do login, utilizamos o OpenID Connect que por padr√£o utiliza o escopo do Profile
 				options.DefaultChallengeScheme = "oidc";
 			})
-			.AddCookie("Cookies")
-			.AddOpenIdConnect("oidc", "UFBA", options =>
-			{
-				options.SignInScheme = "Cookies";
+				.AddCookie("Cookies")
+				.AddOpenIdConnect("oidc", "UFBA", options =>
+				{
+					options.SignInScheme = "Cookies";
 
-				//Aponta para o nosso servidor de autenticaÁ„o
-				options.Authority = "http://localhost:5000";
-				options.RequireHttpsMetadata = false;
+					//Aponta para o nosso servidor de autentica√ß√£o
+					options.Authority = "http://localhost:5000";
+					options.RequireHttpsMetadata = false;
 
-				//Nome da nossa aplicaÁ„o que tentar· se autenticar no nosso servidor de identidade
-				//Observe que ela possui o mesmo nome da app que liberamos no nosso servidor de identidade
-				options.ClientId = "79E0C2E2-D750-45BC-8FA3-1A9D5F9F82B5";
-				options.SaveTokens = true;
+					//Nome da nossa aplica√ß√£o que tentar√° se autenticar no nosso servidor de identidade
+					//Observe que ela possui o mesmo nome da app que liberamos no nosso servidor de identidade
+					options.ClientId = "79E0C2E2-D750-45BC-8FA3-1A9D5F9F82B5";
+					options.SaveTokens = true;
 
-				//Adicionamos o escopo do e-mail para utilizarmos a claim de e-mail.
-				//options.Scope.Add(IdentityServerConstants.StandardScopes.Email);
-				options.Scope.Add("email");
-			})
-			.AddFacebook(facebookOptions =>
-			{
-				//facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-				//facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+					//Adicionamos o escopo do e-mail para utilizarmos a claim de e-mail.
+					//options.Scope.Add(IdentityServerConstants.StandardScopes.Email);
+					options.Scope.Add("email");
+				})
+				.AddFacebook(options =>
+				{
+					//TODO: Remover declara√ß√£o expl√≠cita de credenciais
+					//facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+					//facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
-				facebookOptions.AppId = "999621133527975";
-				facebookOptions.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
-			});
+					options.AppId = "999621133527975";
+					options.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
+					options.Scope.Add("email");
+					options.Scope.Add("public_profile");
+					options.Fields.Add("birthday");
+					options.Fields.Add("picture");
+					options.Fields.Add("gender");
+				});
 
 			// Register no-op EmailSender used by account confirmation and password reset during development
 			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
 			services.AddSingleton<IEmailSender, EmailSender>();
+			services.AddMvc();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,14 +97,14 @@ namespace FindU.WebSite
 			}
 			else
 			{
-				app.UseExceptionHandler("/Error");
+				app.UseExceptionHandler("/Home/Error");
 			}
 
 			app.UseStaticFiles();
 
 			app.UseAuthentication();
 
-			app.UseMvc();
+			app.UseMvcWithDefaultRoute();
 		}
 	}
 }
