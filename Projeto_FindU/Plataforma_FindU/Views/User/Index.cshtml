@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Plataforma_FindU.Models.Entity.tb_usuario>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Criar Novo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.tb_curso.des_nome_cur)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.des_nome_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.num_idade_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.num_semestre_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.des_biografia_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.des_genero_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.des_orientacao_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sts_status_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dat_cadastro_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cod_senha_usu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.des_email_usu)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.tb_curso.des_nome_cur)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.des_nome_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.num_idade_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.num_semestre_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.des_biografia_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.des_genero_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.des_orientacao_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sts_status_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dat_cadastro_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cod_senha_usu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.des_email_usu)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.cod_usuario_usu }) |
+            @Html.ActionLink("Details", "Details", new { id=item.cod_usuario_usu }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.cod_usuario_usu })
+        </td>
+    </tr>
+}
+
+</table>
