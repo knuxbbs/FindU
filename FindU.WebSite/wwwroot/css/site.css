@@ -25,6 +25,11 @@
 	margin-top: 20px;
 }
 
+.col-centered {
+	float: none;
+	margin: 0 auto;
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;

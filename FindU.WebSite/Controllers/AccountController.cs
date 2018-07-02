@@ -275,8 +275,8 @@ namespace FindU.WebSite.Controllers
                 return RedirectToAction(nameof(Login));
             }
 
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+			// Sign in the user with this external login provider if the user already has a login.
+			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
             if (result.Succeeded)
             {
@@ -292,8 +292,16 @@ namespace FindU.WebSite.Controllers
 	        // If the user does not have an account, then ask the user to create an account.
 	        ViewData["ReturnUrl"] = returnUrl;
 	        ViewData["LoginProvider"] = info.LoginProvider;
+
 	        var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-	        return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+			var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+			var birthday = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
+			var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
+			var location = info.Principal.FindFirstValue(ClaimTypes.Locality);
+			var identifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+			var picture = $"https://graph.facebook.com/{identifier}/picture?type=large";
+
+			return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
         }
 
         [HttpPost]

@@ -73,11 +73,13 @@ namespace FindU.WebSite
 
 					options.AppId = "999621133527975";
 					options.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
-					options.Scope.Add("email");
+					options.Scope.Add("user_birthday");
+					options.Scope.Add("user_gender");
+					options.Scope.Add("user_location");
 					options.Scope.Add("public_profile");
 					options.Fields.Add("birthday");
-					options.Fields.Add("picture");
 					options.Fields.Add("gender");
+					options.Fields.Add("picture");
 				});
 
 			// Register no-op EmailSender used by account confirmation and password reset during development
