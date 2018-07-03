@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FindU.Infra.Data.Identity.Configuration;
@@ -301,7 +302,17 @@ namespace FindU.WebSite.Controllers
 			var identifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
 			var picture = $"https://graph.facebook.com/{identifier}/picture?type=large";
 
-			return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+	        var externalLoginViewModel = new ExternalLoginViewModel
+	        {
+		        Email = email,
+		        Nome = name,
+		        DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
+		        GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 0,
+		        Municipio = location,
+				PhotoUrl = picture
+	        };
+
+			return View("ExternalLogin", externalLoginViewModel);
         }
 
         [HttpPost]
