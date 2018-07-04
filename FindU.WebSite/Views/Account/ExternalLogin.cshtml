@@ -17,7 +17,9 @@
 	<div class="col-md-4">
 		<form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 			<div asp-validation-summary="All" class="text-danger"></div>
-			<img src="@Model.PhotoUrl" alt="User picture" />
+			<div class="form-group">
+				<img src="@Model.PhotoUrl" alt="User picture" />
+			</div>
 			<div class="form-group">
 				<label asp-for="Email"></label>
 				<input asp-for="Email" class="form-control" />
@@ -29,23 +31,39 @@
 				<span asp-validation-for="Nome" class="text-danger"></span>
 			</div>
 			<label asp-for="GeneroId" class="control-label">Gênero</label>
-			<ul class="list-inline">
-				@foreach (var item in Model.Generos)
-				{
-					<li>
-						<input asp-for="GeneroId" type="radio" value="@item.Id" /> @item.Descricao
-					</li>
-				}
-			</ul>
+			<div class="form-group">
+				<ul class="list-inline">
+					@foreach (var item in Model.Generos)
+					{
+						<li>
+							<input asp-for="GeneroId" type="radio" value="@item.Id" /> @item.Descricao
+						</li>
+					}
+				</ul>
+			</div>
 			<div class="form-group">
 				<label asp-for="DataNascimento"></label>
 				<input asp-for="DataNascimento" class="form-control" />
 				<span asp-validation-for="DataNascimento" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Municipio"></label>
-				<input asp-for="Municipio" class="form-control" />
-				<span asp-validation-for="Municipio" class="text-danger"></span>
+				<label asp-for="Sobre"></label>
+				<textarea asp-for="Sobre" class="form-control" rows="5"></textarea>
+				<span asp-validation-for="Sobre" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="InteressadoEm" class="control-label">Interessado em</label>
+				<ul class="list-inline">
+					@for (var i = 0; i < Model.InteressadoEm.Length; i++)
+					{
+						<li>
+							<input id="chkAtividade_@Model.InteressadoEm[i].Id" type="checkbox" asp-for="@Model.InteressadoEm[i].IsChecked" />
+							<label for="chkAtividade_@Model.InteressadoEm[i].Id">@Model.InteressadoEm[i].Text</label>
+							<input id="atividadeId_@Model.InteressadoEm[i].Id" type="hidden" asp-for="@Model.InteressadoEm[i].Id" />
+							<input id="txtAtividade_@Model.InteressadoEm[i].Id" type="hidden" asp-for="@Model.InteressadoEm[i].Text" />
+						</li>
+					}
+				</ul>
 			</div>
 			<button type="submit" class="btn btn-default">Register</button>
 		</form>

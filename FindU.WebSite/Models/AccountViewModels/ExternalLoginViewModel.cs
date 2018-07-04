@@ -1,3 +1,4 @@
+using FindU.WebSite.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,16 @@ namespace FindU.WebSite.Models.AccountViewModels
 		public string Municipio { get; set; }
 
 		public string PhotoUrl { get; set; }
+
+		public string Sobre { get; set; }
+
+		public IEnumerable<int> InteressadoEmId { get; set; }
+
+		public CheckBoxListItem[] InteressadoEm = new[]
+		{
+			new CheckBoxListItem{Id = 1, Text = "Homens"},
+			new CheckBoxListItem{Id = 2, Text = "Mulheres"},
+		};
 	}
 
 	public class GeneroViewModel
