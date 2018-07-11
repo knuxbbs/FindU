@@ -18,7 +18,7 @@
 		<form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 			<div asp-validation-summary="All" class="text-danger"></div>
 			<div class="form-group">
-				<img src="@Model.PhotoUrl" alt="User picture" />
+				<img src="@Model.CaminhoFoto" alt="User picture" />
 			</div>
 			<div class="form-group">
 				<label asp-for="Email"></label>
@@ -52,15 +52,15 @@
 				<span asp-validation-for="Sobre" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="InteressadoEm" class="control-label">Interessado em</label>
+				<label asp-for="GenerosInteresse" class="control-label">Interessado em</label>
 				<ul class="list-inline">
-					@for (var i = 0; i < Model.InteressadoEm.Length; i++)
+					@for (var i = 0; i < Model.GenerosInteresse.Length; i++)
 					{
 						<li>
-							<input id="chkAtividade_@Model.InteressadoEm[i].Id" type="checkbox" asp-for="@Model.InteressadoEm[i].IsChecked" />
-							<label for="chkAtividade_@Model.InteressadoEm[i].Id">@Model.InteressadoEm[i].Text</label>
-							<input id="atividadeId_@Model.InteressadoEm[i].Id" type="hidden" asp-for="@Model.InteressadoEm[i].Id" />
-							<input id="txtAtividade_@Model.InteressadoEm[i].Id" type="hidden" asp-for="@Model.InteressadoEm[i].Text" />
+							<input id="chkAtividade_@Model.GenerosInteresse[i].Id" type="checkbox" asp-for="@Model.GenerosInteresse[i].IsChecked" />
+							<label for="chkAtividade_@Model.GenerosInteresse[i].Id">@Model.GenerosInteresse[i].Text</label>
+							<input id="atividadeId_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Id" />
+							<input id="txtAtividade_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Text" />
 						</li>
 					}
 				</ul>

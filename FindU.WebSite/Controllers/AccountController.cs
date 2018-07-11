@@ -307,12 +307,12 @@ namespace FindU.WebSite.Controllers
 		        Email = email,
 		        Nome = name,
 		        DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
-		        GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 0,
-		        Municipio = location,
-				PhotoUrl = picture
+		        GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 1,
+		        Localizacao = location,
+				CaminhoFoto = picture
 	        };
 
-			return View("ExternalLogin", externalLoginViewModel);
+			return View(nameof(ExternalLogin), externalLoginViewModel);
         }
 
         [HttpPost]

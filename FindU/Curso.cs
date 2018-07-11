@@ -5,6 +5,6 @@
 	    public int Id { get; set; }
 	    public string Nome { get; set; }
 	    public UnidadeUniversitaria UnidadeUniversitaria { get; set; }
-	    public int UnidadeAcademicaId { get; set; }
+	    public int UnidadeUniversitariaId { get; set; }
     }
 }
