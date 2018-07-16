@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace FindU.Infra.Data.Mappings
 {
@@ -11,8 +10,11 @@ namespace FindU.Infra.Data.Mappings
 			builder.HasKey(c => c.Id);
 
 			builder.Property(c => c.Nome)
-				.HasColumnType("varchar(100)")
+				.HasColumnType("varchar(200)")
 				.HasMaxLength(100)
+				.IsRequired();
+
+			builder.Property(c => c.AreaConhecimentoId)
 				.IsRequired();
 
 			var i = 1;
@@ -20,7 +22,7 @@ namespace FindU.Infra.Data.Mappings
 			builder.HasData(
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "ARQUITETURA" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "POLITÉCNICA" },
-				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "FISICA" },
+				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "FÍSICA" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "GEOCIÊNCIAS" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "MATEMÁTICA" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 1, Nome = "QUIMICA" },
@@ -33,7 +35,7 @@ namespace FindU.Infra.Data.Mappings
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 2, Nome = "MEDICINA VETERINÁRIA" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 2, Nome = "NUTRIÇÃO" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 2, Nome = "ODONTOLOGIA" },
-
+				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 2, Nome = "SAÚDE COLETIVA" },
 
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 3, Nome = "ADMINISTRAÇÃO" },
 				new UnidadeUniversitaria { Id = i++, AreaConhecimentoId = 3, Nome = "CIÊNCIAS CONTÁBEIS" },
