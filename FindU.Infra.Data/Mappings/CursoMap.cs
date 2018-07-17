@@ -202,7 +202,7 @@ namespace FindU.Infra.Data.Mappings
 				new Curso { Id = i++, Nome = "Arquivologia",
 					CodigoSupac = 317, UnidadeUniversitariaId = 24 },
 				new Curso { Id = i++, Nome = "Arquivologia (noturno)",
-					CodigoSupac = 381, UnidadeUniversitariaId = 24 },
+					CodigoSupac = 381, UnidadeUniversitariaId = 24 }
 			);
 		}
 	}
