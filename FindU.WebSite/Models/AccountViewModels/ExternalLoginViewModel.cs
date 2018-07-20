@@ -29,10 +29,11 @@ namespace FindU.WebSite.Models.AccountViewModels
 		[DataType(DataType.Date)]
 		public DateTime DataNascimento { get; set; }
 
-		[Required(ErrorMessage = "Número de matrícula é obrigatório.")]
+		[Required(ErrorMessage = "NÃºmero de matrÃ­cula Ã© obrigatÃ³rio.")]
+		[Remote("ValidarMatricula", "Account")]
 		public string Matricula { get; set; }
 
-		[Required(ErrorMessage = "Curso é obrigatório.")]
+		[Required(ErrorMessage = "Curso Ã© obrigatÃ³rio.")]
 		public int CursoId { get; set; }
 
 		public SelectList Cursos { get; set; }

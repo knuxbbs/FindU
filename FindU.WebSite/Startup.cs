@@ -12,43 +12,44 @@ using FindU.WebSite.Services;
 
 namespace FindU.WebSite
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddIdentity<ApplicationUser, ApplicationRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-			services.AddScoped<ApplicationUserManager>();
-			services.AddScoped<ApplicationRoleManager>();
-			services.AddScoped<ApplicationSignInManager>();
+            services.AddScoped<ApplicationUserManager>();
+            services.AddScoped<ApplicationRoleManager>();
+            services.AddScoped<ApplicationSignInManager>();
 
-			//Exibe as claims de maneira mais "amigável"
-			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //Exibe as claims de maneira mais "amigável"
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-			//Adiciona o serviço de autenticação
-			services.AddAuthentication(options =>
-			{
-				//Nosso esquema default será baseado em cookie
-				options.DefaultScheme = "Cookies";
+            //Adiciona o serviço de autenticação
+            services
+            .AddAuthentication(options =>
+            {
+                //Nosso esquema default será baseado em cookie
+                options.DefaultScheme = "Cookies";
 
-				//Como precisamos recuperar os dados depois do login, utilizamos o OpenID Connect que por padrão utiliza o escopo do Profile
-				options.DefaultChallengeScheme = "oidc";
-			})
-				.AddCookie("Cookies")
-				.AddOpenIdConnect("oidc", "UFBA", options =>
+                //Como precisamos recuperar os dados depois do login, utilizamos o OpenID Connect que por padrão utiliza o escopo do Profile
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", "UFBA", options =>
 				{
 					options.SignInScheme = "Cookies";
 
@@ -65,48 +66,48 @@ namespace FindU.WebSite
 					//options.Scope.Add(IdentityServerConstants.StandardScopes.Email);
 					options.Scope.Add("email");
 				})
-				.AddFacebook(options =>
-				{
-					//TODO: Remover declaração explícita de credenciais
-					//facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-					//facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                .AddFacebook(options =>
+                {
+                    //TODO: Remover declaração explícita de credenciais
+                    //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                    //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
-					options.AppId = "999621133527975";
-					options.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
-					options.Scope.Add("user_birthday");
-					options.Scope.Add("user_gender");
-					options.Scope.Add("user_location");
-					options.Scope.Add("public_profile");
-					options.Fields.Add("birthday");
-					options.Fields.Add("gender");
-					options.Fields.Add("picture");
-				});
+                    options.AppId = "999621133527975";
+                    options.AppSecret = "15c8b96503765f669ee7c7ebdfa283b1";
+                    options.Scope.Add("user_birthday");
+                    options.Scope.Add("user_gender");
+                    options.Scope.Add("user_location");
+                    options.Scope.Add("public_profile");
+                    options.Fields.Add("birthday");
+                    options.Fields.Add("gender");
+                    options.Fields.Add("picture");
+                });
 
-			// Register no-op EmailSender used by account confirmation and password reset during development
-			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-			services.AddSingleton<IEmailSender, EmailSender>();
-			services.AddMvc();
-		}
+            // Register no-op EmailSender used by account confirmation and password reset during development
+            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddMvc();
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-			}
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-			app.UseStaticFiles();
+            app.UseStaticFiles();
 
-			app.UseAuthentication();
+            app.UseAuthentication();
 
-			app.UseMvcWithDefaultRoute();
-		}
-	}
+            app.UseMvcWithDefaultRoute();
+        }
+    }
 }

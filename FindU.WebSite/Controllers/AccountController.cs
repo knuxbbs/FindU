@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FindU.WebSite.Models.AccountViewModels;
 using FindU.WebSite.Services;
+using FindU.Application;
 
 namespace FindU.WebSite.Controllers
 {
@@ -24,8 +25,8 @@ namespace FindU.WebSite.Controllers
         private readonly ILogger _logger;
 
         public AccountController(
-	        ApplicationUserManager userManager,
-	        ApplicationSignInManager signInManager,
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
@@ -276,8 +277,8 @@ namespace FindU.WebSite.Controllers
                 return RedirectToAction(nameof(Login));
             }
 
-			// Sign in the user with this external login provider if the user already has a login.
-			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
             if (result.Succeeded)
             {
@@ -290,29 +291,29 @@ namespace FindU.WebSite.Controllers
                 return RedirectToAction(nameof(Lockout));
             }
 
-	        // If the user does not have an account, then ask the user to create an account.
-	        ViewData["ReturnUrl"] = returnUrl;
-	        ViewData["LoginProvider"] = info.LoginProvider;
+            // If the user does not have an account, then ask the user to create an account.
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["LoginProvider"] = info.LoginProvider;
 
-	        var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-			var name = info.Principal.FindFirstValue(ClaimTypes.Name);
-			var birthday = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
-			var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
-			var location = info.Principal.FindFirstValue(ClaimTypes.Locality);
-			var identifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
-			var picture = $"https://graph.facebook.com/{identifier}/picture?type=large";
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+            var birthday = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
+            var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
+            var location = info.Principal.FindFirstValue(ClaimTypes.Locality);
+            var identifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var picture = $"https://graph.facebook.com/{identifier}/picture?type=large";
 
-	        var externalLoginViewModel = new ExternalLoginViewModel
-	        {
-		        Email = email,
-		        Nome = name,
-		        DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
-		        GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 1,
-		        Localizacao = location,
-				CaminhoFoto = picture
-	        };
+            var externalLoginViewModel = new ExternalLoginViewModel
+            {
+                Email = email,
+                Nome = name,
+                DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
+                GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 1,
+                Localizacao = location,
+                CaminhoFoto = picture
+            };
 
-			return View(nameof(ExternalLogin), externalLoginViewModel);
+            return View(nameof(ExternalLogin), externalLoginViewModel);
         }
 
         [HttpPost]
@@ -453,6 +454,21 @@ namespace FindU.WebSite.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+
+        public JsonResult ValidarMatricula(string matricula)
+        {
+            var validacao = new Class1();
+
+            var curso = new Curso { CodigoSupac = 112 };
+
+            if (!validacao.VerificarMatricula(matricula, curso))
+            {
+                return Json($"Matrícula inválida.");
+            }
+
+            return Json(true);
         }
 
         #region Helpers
