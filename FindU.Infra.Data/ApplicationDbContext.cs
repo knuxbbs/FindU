@@ -1,30 +1,42 @@
-﻿using FindU.Infra.Data.Identity.Models;
-using FindU.Infra.Data.Mappings;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using FindU.Infra.Data.Mappings;
+using FindU.Infra.Data.Mappings.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
 namespace FindU.Infra.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+	public class ApplicationDbContext : DbContext
+	{
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+			: base(options)
+		{
+		}
 
-		public DbSet<Estudante> Estudantes { get; set; }
+		public DbSet<Estudante> Estudante { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-			// Customize the ASP.NET Identity model and override the defaults if needed.
-			// For example, you can rename the ASP.NET Identity table names and more.
-			// Add your customizations after calling base.OnModelCreating(builder);
+		{
+			base.OnModelCreating(builder);
 
-			builder.ApplyConfiguration(new EstudanteMap());
+			//Aplica configurações setadas através da FluentAPI
+
+			#region [ Identity ]
+
+			builder.ApplyConfiguration(new UserMap());
+			builder.ApplyConfiguration(new RoleMap());
+			builder.ApplyConfiguration(new RoleClaimMap());
+			builder.ApplyConfiguration(new UserClaimMap());
+			builder.ApplyConfiguration(new UserLoginMap());
+			builder.ApplyConfiguration(new UserRoleMap());
+			builder.ApplyConfiguration(new UserTokenMap());
+
+			#endregion
+
 			builder.ApplyConfiguration(new AreaConhecimentoMap());
+			builder.ApplyConfiguration(new UnidadeUniversitariaMap());
+			builder.ApplyConfiguration(new CursoMap());
+			builder.ApplyConfiguration(new EstudanteMap());
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

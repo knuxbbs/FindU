@@ -21,7 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Appl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindU.Application", "FindU.Application\FindU.Application.csproj", "{DF983CF8-8F9C-48B8-ACED-66334F25C668}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindU.Application.Test", "FindU.Application.Test\FindU.Application.Test.csproj", "{A9360066-945F-49AC-A1AF-4FB00056BBE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindU.Application.Test", "FindU.Application.Test\FindU.Application.Test.csproj", "{A9360066-945F-49AC-A1AF-4FB00056BBE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindU.Infra.IoC", "FindU.Infra.IoC\FindU.Infra.IoC.csproj", "{DE711C6A-33F7-4E19-869F-7749FDB5F0B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{A9360066-945F-49AC-A1AF-4FB00056BBE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9360066-945F-49AC-A1AF-4FB00056BBE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9360066-945F-49AC-A1AF-4FB00056BBE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE711C6A-33F7-4E19-869F-7749FDB5F0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE711C6A-33F7-4E19-869F-7749FDB5F0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE711C6A-33F7-4E19-869F-7749FDB5F0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE711C6A-33F7-4E19-869F-7749FDB5F0B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{F4196F4F-7966-41F5-9942-8A440D3FD25B} = {139D0002-8029-4E21-B247-96DD4ACE3551}
 		{DF983CF8-8F9C-48B8-ACED-66334F25C668} = {50E885EB-6A31-488A-8502-7012947B7F67}
 		{A9360066-945F-49AC-A1AF-4FB00056BBE9} = {50E885EB-6A31-488A-8502-7012947B7F67}
+		{DE711C6A-33F7-4E19-869F-7749FDB5F0B6} = {8BE49300-F6EA-4A59-B6EB-D8DBAE341C5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51176475-3E3A-4C11-B375-AA55E5CC3DFC}

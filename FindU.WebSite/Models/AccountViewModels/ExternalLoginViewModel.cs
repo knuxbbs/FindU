@@ -25,21 +25,33 @@ namespace FindU.WebSite.Models.AccountViewModels
 		public string Nome { get; set; }
 
 		[Required]
-		[Display(Name = "Data de nascimento")]
+		[EmailAddress]
+		[Display(Name = "E-mail")]
+		public string Email { get; set; }
+
+		[Phone]
+		[Display(Name = "Telefone")]
+		public string PhoneNumber { get; set; }
+
+		[Required]
 		[DataType(DataType.Date)]
+		[Display(Name = "Data de nascimento")]
 		public DateTime DataNascimento { get; set; }
 
 		[Required(ErrorMessage = "Número de matrícula é obrigatório.")]
 		[Remote("ValidarMatricula", "Account")]
 		public string Matricula { get; set; }
 
+		[Display(Name = "Curso")]
 		[Required(ErrorMessage = "Curso é obrigatório.")]
 		public int CursoId { get; set; }
 
 		public SelectList Cursos { get; set; }
 
+		[HiddenInput]
 		public int AnoIngresso { get; set; }
 
+		[HiddenInput]
 		public bool Formado { get; set; } = false;
 
 		[Required]
@@ -61,11 +73,6 @@ namespace FindU.WebSite.Models.AccountViewModels
 			new CheckBoxListItem{Id = 1, Text = "Homens"},
 			new CheckBoxListItem{Id = 2, Text = "Mulheres"},
 		};
-
-		[Required]
-		[HiddenInput]
-		[EmailAddress]
-		public string Email { get; set; }
 
 		[HiddenInput]
 		public string Localizacao { get; set; }

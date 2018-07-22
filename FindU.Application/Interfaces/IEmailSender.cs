@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FindU.WebSite.Services
+namespace FindU.Application.Interfaces
 {
     public interface IEmailSender
     {

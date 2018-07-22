@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FindU.Application\FindU.Application.csproj" />
+    <ProjectReference Include="..\FindU.Infra.Data\FindU.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

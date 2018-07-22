@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FindU.Identity;
+using System;
 
 namespace FindU
 {
@@ -34,5 +35,8 @@ namespace FindU
 		//public bool DeCachorros { get; set; }
 
 		#endregion
+
+		public string UsuarioId { get; set; }
+		public virtual User Usuario { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using FindU.Application.Interfaces;
+using System.Threading.Tasks;
 
-namespace FindU.WebSite.Services
+namespace FindU.Application.Services
 {
     // This class is used by the application to send email for account confirmation and password reset.
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713

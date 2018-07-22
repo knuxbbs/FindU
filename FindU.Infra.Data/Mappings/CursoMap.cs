@@ -203,110 +203,68 @@ namespace FindU.Infra.Data.Mappings
 					CodigoSupac = 317, UnidadeUniversitariaId = 24 },
 				new Curso { Id = i++, Nome = "Arquivologia (noturno)",
 					CodigoSupac = 381, UnidadeUniversitariaId = 24 },
-					
-					new Curso { Id = i++, Nome = "Direito (noturno)", 
-					CodigoSupac = 382, UnidadeUniversitariaId = 24 },
 
-new Curso { Id = i++, Nome = "Gênero e Diversidade (noturno)",
-					CodigoSupac = 383, UnidadeUniversitariaId = 24 },
-
-new Curso { Id = i++, Nome = "C.S.T. de Gestão Pública e Gestão Social (noturno)",
-					CodigoSupac = 384, UnidadeUniversitariaId = 24 },
-
-new Curso { Id = i++, Nome = "Pedagogia (noturno)",
-					CodigoSupac = 385, UnidadeUniversitariaId = 24 },
-
-new Curso { Id = i++, Nome = "História (noturno)",
-					CodigoSupac = 386, UnidadeUniversitariaId = 24 },
-
-
-
-//Área IV - Letras 
-new Curso { Id = i++, Nome = "Letras Vernáculas",
+				//25 - LETRAS
+				new Curso { Id = i++, Nome = "Letras Vernáculas",
 					CodigoSupac = 401, UnidadeUniversitariaId = 25 },
-
-new Curso { Id = i++, Nome = "Letras Vernáculas com Língua Estrangeira",
-					CodigoSupac = 402, UnidadeUniversitariaId = 25 },
-
-new Curso { Id = i++, Nome = "Língua Estrangeira",
-					CodigoSupac = 403, UnidadeUniversitariaId = 25 },
-
-new Curso { Id = i++, Nome = "Letras Vernáculas (noturno)",
+				new Curso { Id = i++, Nome = "Letras Vernáculas (noturno)",
 					CodigoSupac = 480, UnidadeUniversitariaId = 25 },
-
-new Curso { Id = i++, Nome = "Língua Estrangeira (noturno)",
+				new Curso { Id = i++, Nome = "Letras Vernáculas com Língua Estrangeira",
+					CodigoSupac = 402, UnidadeUniversitariaId = 25 },
+				new Curso { Id = i++, Nome = "Língua Estrangeira",
+					CodigoSupac = 403, UnidadeUniversitariaId = 25 },
+				new Curso { Id = i++, Nome = "Língua Estrangeira (noturno)",
 					CodigoSupac = 481, UnidadeUniversitariaId = 25 },
 
-
-
-//Área V - Artes 
-new Curso { Id = i++, Nome = "Artes Plásticas",
+				//26 - BELAS ARTES
+				new Curso { Id = i++, Nome = "Artes Plásticas",
 					CodigoSupac = 501, UnidadeUniversitariaId = 26 },
-
-new Curso { Id = i++, Nome = "Composição e Regência",
-					CodigoSupac = 502, UnidadeUniversitariaId = 28 },
-
-new Curso { Id = i++, Nome = "Licenciatura em Dança",
-					CodigoSupac = 503, UnidadeUniversitariaId = 27 },
-
-new Curso { Id = i++, Nome = "Licenciatura em Desenho e Plástica",
+				new Curso { Id = i++, Nome = "Licenciatura em Desenho e Plástica",
 					CodigoSupac = 505, UnidadeUniversitariaId = 26 },
-
-new Curso { Id = i++, Nome = "Artes Cênicas - Direção Teatral",
-					CodigoSupac = 506, UnidadeUniversitariaId = 29 },
-
-new Curso { Id = i++, Nome = "Licenciatura em Música",
-					CodigoSupac = 507, UnidadeUniversitariaId = 28 },
-
-new Curso { Id = i++, Nome = "Canto",
-					CodigoSupac = 508, UnidadeUniversitariaId = 28 },
-
-new Curso { Id = i++, Nome = "Instrumento",
-					CodigoSupac = 509, UnidadeUniversitariaId = 28 },
-
-new Curso { Id = i++, Nome = "Desenho Industrial",
+				new Curso { Id = i++, Nome = "Desenho Industrial",
 					CodigoSupac = 512, UnidadeUniversitariaId = 26 },
-
-new Curso { Id = i++, Nome = "Decoração",
+				new Curso { Id = i++, Nome = "Decoração",
 					CodigoSupac = 513, UnidadeUniversitariaId = 26 },
 
-new Curso { Id = i++, Nome = "Música Popular",
-					CodigoSupac = 514, UnidadeUniversitariaId = 28 },
-
-new Curso { Id = i++, Nome = "Dança (noturno)",
+				//27 - DANÇA
+				new Curso { Id = i++, Nome = "Licenciatura em Dança",
+					CodigoSupac = 503, UnidadeUniversitariaId = 27 },
+				new Curso { Id = i++, Nome = "Dança (noturno)",
 					CodigoSupac = 581, UnidadeUniversitariaId = 27 },
 
+				//28 - MÚSICA
+				new Curso { Id = i++, Nome = "Composição e Regência",
+					CodigoSupac = 502, UnidadeUniversitariaId = 28 },
+				new Curso { Id = i++, Nome = "Licenciatura em Música",
+					CodigoSupac = 507, UnidadeUniversitariaId = 28 },
+				new Curso { Id = i++, Nome = "Canto",
+					CodigoSupac = 508, UnidadeUniversitariaId = 28 },
+				new Curso { Id = i++, Nome = "Instrumento",
+					CodigoSupac = 509, UnidadeUniversitariaId = 28 },
+				new Curso { Id = i++, Nome = "Música Popular",
+					CodigoSupac = 514, UnidadeUniversitariaId = 28 },
 
-
-//Bacharelados Interdisciplinares - Humanidades, Artes e Ciências
-new Curso { Id = i++, Nome = "B.I. em Ciência e Tecnologia (noturno)",
+				//29 - TEATRO
+				new Curso { Id = i++, Nome = "Artes Cênicas - Direção Teatral",
+					CodigoSupac = 506, UnidadeUniversitariaId = 29 },
+				
+				//30 - HUMANIDADES, ARTES E CIÊNCIAS
+				new Curso { Id = i++, Nome = "Ciência e Tecnologia (noturno)",
 					CodigoSupac = 189, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Ciência e Tecnologia",
+				new Curso { Id = i++, Nome = "Ciência e Tecnologia",
 					CodigoSupac = 190, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Saúde",
+				new Curso { Id = i++, Nome = "Saúde",
 					CodigoSupac = 226, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Saúde (noturno)",
+				new Curso { Id = i++, Nome = "Saúde (noturno)",
 					CodigoSupac = 286, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Humanidades",
+				new Curso { Id = i++, Nome = "Humanidades",
 					CodigoSupac = 327, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Humanidades (noturno)",
+				new Curso { Id = i++, Nome = "Humanidades (noturno)",
 					CodigoSupac = 387, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Artes",
+				new Curso { Id = i++, Nome = "Artes",
 					CodigoSupac = 515, UnidadeUniversitariaId = 30 },
-
-new Curso { Id = i++, Nome = "B.I. em Artes (noturno)",
+				new Curso { Id = i++, Nome = "Artes (noturno)",
 					CodigoSupac = 580, UnidadeUniversitariaId = 30 }
-
-
-
-
-
 			);
 		}
 	}

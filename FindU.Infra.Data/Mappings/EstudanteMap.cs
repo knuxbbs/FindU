@@ -25,8 +25,7 @@ namespace FindU.Infra.Data.Mappings
 
 			builder.Property(c => c.Localizacao)
 				.HasColumnType("varchar(200)")
-				.HasMaxLength(200)
-				.IsRequired();
+				.HasMaxLength(200);
 
 			builder.Property(c => c.Matricula)
 				.HasColumnType("varchar(20)")

@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FindU.Infra.Data\FindU.Infra.Data.csproj" />
     <ProjectReference Include="..\FindU.Application\FindU.Application.csproj" />
+    <ProjectReference Include="..\FindU.Infra.IoC\FindU.Infra.IoC.csproj" />
     <ProjectReference Include="..\FindU\FindU.csproj" />
   </ItemGroup>
 
