@@ -1,7 +1,7 @@
-﻿using FindU.Identity;
-using System;
+﻿using System;
+using FindU.Models.Identity;
 
-namespace FindU
+namespace FindU.Models
 {
 	public class Curtida
 	{

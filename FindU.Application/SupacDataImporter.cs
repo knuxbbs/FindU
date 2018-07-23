@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using FindU.Models;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 
@@ -13,6 +14,13 @@ namespace FindU.Application
 	public class SupacDataImporter
 	{
 		public bool ValidarMatricula(string matricula, Curso curso)
+		{
+			var estudante = ObterDadosDeEstudante(matricula, curso);
+
+			return estudante != null;
+		}
+
+		internal static EstudanteDto ObterDadosDeEstudante(string matricula, Curso curso)
 		{
 			var pdfStream = new MemoryStream(new WebClient().DownloadData(
 				string.Format("http://matricula.ufba.br/{0}_escalonamento.pdf", curso.CodigoSupac)));
@@ -125,10 +133,10 @@ namespace FindU.Application
 				});
 			}
 
-			return listaEstudanteDto.Any(x => x.Matricula == matricula);
+			return listaEstudanteDto.SingleOrDefault(x => x.Matricula == matricula);
 		}
 
-		public class EstudanteDto
+		internal class EstudanteDto
 		{
 			public string Matricula { get; set; }
 			public string Nome { get; set; }

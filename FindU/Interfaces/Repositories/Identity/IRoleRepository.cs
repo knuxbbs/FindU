@@ -1,4 +1,4 @@
-﻿using FindU.Identity;
+﻿using FindU.Models.Identity;
 
 namespace FindU.Interfaces.Repositories.Identity
 {

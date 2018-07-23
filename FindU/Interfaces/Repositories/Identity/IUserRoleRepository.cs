@@ -1,5 +1,5 @@
-﻿using FindU.Identity;
-using System.Linq;
+﻿using System.Linq;
+using FindU.Models.Identity;
 
 namespace FindU.Interfaces.Repositories.Identity
 {

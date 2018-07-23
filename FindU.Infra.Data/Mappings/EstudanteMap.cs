@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FindU.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FindU.Infra.Data.Mappings
@@ -8,6 +9,9 @@ namespace FindU.Infra.Data.Mappings
 		public void Configure(EntityTypeBuilder<Estudante> builder)
 		{
 			builder.HasKey(c => c.Id);
+
+			builder.Property(c => c.Genero)
+				.IsRequired();
 
 			builder.Property(c => c.Nome)
 				.HasColumnType("varchar(200)")
@@ -20,7 +24,7 @@ namespace FindU.Infra.Data.Mappings
 			builder.Property(c => c.DataNascimento)
 				.IsRequired();
 
-			builder.Property(c => c.Sobre)
+			builder.Property(c => c.Descricao)
 				.IsRequired();
 
 			builder.Property(c => c.Localizacao)
@@ -37,7 +41,7 @@ namespace FindU.Infra.Data.Mappings
 
 			builder.HasMany(c => c.TiposDeAtracao);
 
-			builder.Property(c => c.OrientacaoSexualId)
+			builder.Property(c => c.OrientacaoSexual)
 				.IsRequired();
 		}
 	}

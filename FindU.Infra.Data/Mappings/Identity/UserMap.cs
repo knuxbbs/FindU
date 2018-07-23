@@ -1,9 +1,9 @@
-﻿using FindU.Identity;
+﻿using FindU.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FindU.Infra.Data.Mappings
+namespace FindU.Infra.Data.Mappings.Identity
 {
 	public class UserMap : IEntityTypeConfiguration<User>
 	{

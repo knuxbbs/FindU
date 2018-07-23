@@ -1,4 +1,6 @@
-﻿namespace FindU.Interfaces
+﻿using FindU.Models;
+
+namespace FindU.Interfaces
 {
 	public interface IOrientacaoPoliticaRepository : IRepositoryBase<OrientacaoPolitica>
 	{

@@ -1,10 +1,10 @@
-﻿using FindU.Identity;
-using FindU.Interfaces.Repositories.Identity;
+﻿using FindU.Interfaces.Repositories.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using FindU.Models.Identity;
 
 namespace FindU.Infra.Data.Repositories.Identity
 {

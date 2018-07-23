@@ -1,4 +1,4 @@
-﻿using FindU.Identity;
+﻿using FindU.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

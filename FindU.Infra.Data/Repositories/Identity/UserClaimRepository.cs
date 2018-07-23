@@ -1,8 +1,8 @@
-﻿using FindU.Identity;
-using FindU.Interfaces.Repositories.Identity;
+﻿using FindU.Interfaces.Repositories.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using FindU.Models.Identity;
 
 namespace FindU.Infra.Data.Repositories.Identity
 {

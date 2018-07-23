@@ -1,3 +1,4 @@
+using FindU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FindU.Application.Test

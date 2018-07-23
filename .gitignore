@@ -269,3 +269,6 @@ __pycache__/
 
 # Visual Studio Code
 .vscode/
+
+# Pasta de uploads de usuário
+FindU.WebSite/Uploads/

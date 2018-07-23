@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FindU.Identity
+namespace FindU.Models.Identity
 {
     public class User
     {

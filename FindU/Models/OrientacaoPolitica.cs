@@ -1,4 +1,4 @@
-﻿namespace FindU
+﻿namespace FindU.Models
 {
     public class OrientacaoPolitica
     {

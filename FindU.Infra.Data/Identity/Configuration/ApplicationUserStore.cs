@@ -1,5 +1,4 @@
-﻿using FindU.Identity;
-using FindU.Infra.Data.Identity.Models;
+﻿using FindU.Infra.Data.Identity.Models;
 using FindU.Interfaces.Repositories.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using FindU.Models.Identity;
 
 namespace FindU.Infra.Data.Identity.Configuration
 {

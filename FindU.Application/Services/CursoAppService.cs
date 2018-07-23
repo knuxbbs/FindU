@@ -1,5 +1,6 @@
 ﻿using FindU.Application.Interfaces;
 using FindU.Interfaces;
+using FindU.Models;
 
 namespace FindU.Application.Services
 {

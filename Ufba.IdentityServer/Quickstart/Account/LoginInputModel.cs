@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Ufba.IdentityServer.Quickstart.Account
 {
     public class LoginInputModel
     {

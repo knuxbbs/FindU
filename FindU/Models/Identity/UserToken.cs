@@ -1,4 +1,4 @@
-﻿namespace FindU.Identity
+﻿namespace FindU.Models.Identity
 {
 	public class UserToken : UserTokenKey
 	{

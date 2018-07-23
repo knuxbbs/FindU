@@ -1,4 +1,5 @@
 ﻿using FindU.Interfaces;
+using FindU.Models;
 
 namespace FindU.Infra.Data.Repositories
 {

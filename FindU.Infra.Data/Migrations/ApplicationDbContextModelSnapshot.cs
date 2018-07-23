@@ -19,7 +19,7 @@ namespace FindU.Infra.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("FindU.AreaConhecimento", b =>
+            modelBuilder.Entity("FindU.Models.AreaConhecimento", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace FindU.Infra.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("FindU.Curso", b =>
+            modelBuilder.Entity("FindU.Models.Curso", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +164,7 @@ namespace FindU.Infra.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("FindU.Estudante", b =>
+            modelBuilder.Entity("FindU.Models.Estudante", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -179,7 +179,12 @@ namespace FindU.Infra.Data.Migrations
 
                     b.Property<DateTime>("DataNascimento");
 
+                    b.Property<string>("Descricao")
+                        .IsRequired();
+
                     b.Property<bool>("Formado");
+
+                    b.Property<int>("Genero");
 
                     b.Property<string>("Localizacao")
                         .HasColumnType("varchar(200)")
@@ -197,12 +202,9 @@ namespace FindU.Infra.Data.Migrations
 
                     b.Property<int?>("OrientacaoPoliticaId");
 
-                    b.Property<int>("OrientacaoSexualId");
+                    b.Property<int>("OrientacaoSexual");
 
-                    b.Property<int>("ReligiaoId");
-
-                    b.Property<string>("Sobre")
-                        .IsRequired();
+                    b.Property<string>("Sobrenome");
 
                     b.Property<int?>("TipoDeConsumoBebidaId");
 
@@ -214,10 +216,6 @@ namespace FindU.Infra.Data.Migrations
 
                     b.HasIndex("OrientacaoPoliticaId");
 
-                    b.HasIndex("OrientacaoSexualId");
-
-                    b.HasIndex("ReligiaoId");
-
                     b.HasIndex("TipoDeConsumoBebidaId");
 
                     b.HasIndex("UsuarioId");
@@ -225,7 +223,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("Estudante");
                 });
 
-            modelBuilder.Entity("FindU.Identity.Role", b =>
+            modelBuilder.Entity("FindU.Models.Identity.Role", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -249,7 +247,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("FindU.Identity.RoleClaim", b =>
+            modelBuilder.Entity("FindU.Models.Identity.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -269,7 +267,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("FindU.Identity.User", b =>
+            modelBuilder.Entity("FindU.Models.Identity.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +335,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserClaim", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,7 +355,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserLogin", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -375,7 +373,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserRole", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserRole", b =>
                 {
                     b.Property<string>("UserId");
 
@@ -388,7 +386,7 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserToken", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserToken", b =>
                 {
                     b.Property<string>("UserId");
 
@@ -414,6 +412,35 @@ namespace FindU.Infra.Data.Migrations
                     b.HasIndex("TipoDeAtracaoId");
 
                     b.ToTable("EstudanteHasTipoDeAtracao");
+                });
+
+            modelBuilder.Entity("FindU.Models.OrientacaoPolitica", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrientacaoPolitica");
+
+                    b.HasData(
+                        new { Id = 1, Nome = "Conservador de direita" },
+                        new { Id = 2, Nome = "Muito conservador, de direita" },
+                        new { Id = 3, Nome = "Centrista" },
+                        new { Id = 4, Nome = "Esquerda-liberal" },
+                        new { Id = 5, Nome = "Muito liberal, de esquerda" },
+                        new { Id = 6, Nome = "Libertário" },
+                        new { Id = 7, Nome = "Libertário ao extremo" },
+                        new { Id = 8, Nome = "Autoritário" },
+                        new { Id = 9, Nome = "Autoritário ao extremo" },
+                        new { Id = 10, Nome = "Depende" }
+                    );
                 });
 
             modelBuilder.Entity("FindU.Models.TipoDeAtracao", b =>
@@ -474,62 +501,7 @@ namespace FindU.Infra.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("FindU.OrientacaoPolitica", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrientacaoPolitica");
-
-                    b.HasData(
-                        new { Id = 1, Nome = "Conservador de direita" },
-                        new { Id = 2, Nome = "Muito conservador, de direita" },
-                        new { Id = 3, Nome = "Centrista" },
-                        new { Id = 4, Nome = "Esquerda-liberal" },
-                        new { Id = 5, Nome = "Muito liberal, de esquerda" },
-                        new { Id = 6, Nome = "Libertário" },
-                        new { Id = 7, Nome = "Libertário ao extremo" },
-                        new { Id = 8, Nome = "Autoritário" },
-                        new { Id = 9, Nome = "Autoritário ao extremo" },
-                        new { Id = 10, Nome = "Depende" }
-                    );
-                });
-
-            modelBuilder.Entity("FindU.OrientacaoSexual", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrientacaoSexual");
-                });
-
-            modelBuilder.Entity("FindU.Religiao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Religiao");
-                });
-
-            modelBuilder.Entity("FindU.UnidadeUniversitaria", b =>
+            modelBuilder.Entity("FindU.Models.UnidadeUniversitaria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -582,84 +554,74 @@ namespace FindU.Infra.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("FindU.Curso", b =>
+            modelBuilder.Entity("FindU.Models.Curso", b =>
                 {
-                    b.HasOne("FindU.UnidadeUniversitaria", "UnidadeUniversitaria")
+                    b.HasOne("FindU.Models.UnidadeUniversitaria", "UnidadeUniversitaria")
                         .WithMany()
                         .HasForeignKey("UnidadeUniversitariaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.Estudante", b =>
+            modelBuilder.Entity("FindU.Models.Estudante", b =>
                 {
-                    b.HasOne("FindU.Curso", "Curso")
+                    b.HasOne("FindU.Models.Curso", "Curso")
                         .WithMany()
                         .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("FindU.OrientacaoPolitica", "OrientacaoPolitica")
+                    b.HasOne("FindU.Models.OrientacaoPolitica", "OrientacaoPolitica")
                         .WithMany()
                         .HasForeignKey("OrientacaoPoliticaId");
-
-                    b.HasOne("FindU.OrientacaoSexual", "OrientacaoSexual")
-                        .WithMany()
-                        .HasForeignKey("OrientacaoSexualId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FindU.Religiao", "Religiao")
-                        .WithMany()
-                        .HasForeignKey("ReligiaoId")
-                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FindU.Models.TipoDeConsumoBebida", "TipoDeConsumoBebida")
                         .WithMany()
                         .HasForeignKey("TipoDeConsumoBebidaId");
 
-                    b.HasOne("FindU.Identity.User", "Usuario")
+                    b.HasOne("FindU.Models.Identity.User", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
                 });
 
-            modelBuilder.Entity("FindU.Identity.RoleClaim", b =>
+            modelBuilder.Entity("FindU.Models.Identity.RoleClaim", b =>
                 {
-                    b.HasOne("FindU.Identity.Role")
+                    b.HasOne("FindU.Models.Identity.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserClaim", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserClaim", b =>
                 {
-                    b.HasOne("FindU.Identity.User")
+                    b.HasOne("FindU.Models.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserLogin", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserLogin", b =>
                 {
-                    b.HasOne("FindU.Identity.User")
+                    b.HasOne("FindU.Models.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserRole", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserRole", b =>
                 {
-                    b.HasOne("FindU.Identity.Role", "Role")
+                    b.HasOne("FindU.Models.Identity.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("FindU.Identity.User", "User")
+                    b.HasOne("FindU.Models.Identity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.Identity.UserToken", b =>
+            modelBuilder.Entity("FindU.Models.Identity.UserToken", b =>
                 {
-                    b.HasOne("FindU.Identity.User")
+                    b.HasOne("FindU.Models.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -667,7 +629,7 @@ namespace FindU.Infra.Data.Migrations
 
             modelBuilder.Entity("FindU.Models.Joins.EstudanteHasTipoDeAtracao", b =>
                 {
-                    b.HasOne("FindU.Estudante", "Estudante")
+                    b.HasOne("FindU.Models.Estudante", "Estudante")
                         .WithMany("TiposDeAtracao")
                         .HasForeignKey("EstudanteId")
                         .HasConstraintName("FK_EstudanteHasTipoDeAtracao_EstudanteId")
@@ -680,9 +642,9 @@ namespace FindU.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FindU.UnidadeUniversitaria", b =>
+            modelBuilder.Entity("FindU.Models.UnidadeUniversitaria", b =>
                 {
-                    b.HasOne("FindU.AreaConhecimento", "AreaConhecimento")
+                    b.HasOne("FindU.Models.AreaConhecimento", "AreaConhecimento")
                         .WithMany()
                         .HasForeignKey("AreaConhecimentoId")
                         .OnDelete(DeleteBehavior.Cascade);

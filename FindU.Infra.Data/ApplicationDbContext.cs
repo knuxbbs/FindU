@@ -4,6 +4,7 @@ using FindU.Infra.Data.Mappings.Joins;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using FindU.Models;
 
 namespace FindU.Infra.Data
 {

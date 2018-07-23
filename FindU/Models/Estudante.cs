@@ -1,10 +1,9 @@
-﻿using FindU.Identity;
-using FindU.Models;
-using FindU.Models.Joins;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using FindU.Models.Identity;
+using FindU.Models.Joins;
 
-namespace FindU
+namespace FindU.Models
 {
 	public class Estudante
 	{
@@ -23,13 +22,15 @@ namespace FindU
 		#region [ Dados pessoais ]
 
 		public string Nome { get; set; }
+		public string Sobrenome { get; set; }
 		public string CaminhoFoto { get; set; }
 		public DateTime DataNascimento { get; set; }
-		public string Sobre { get; set; }
+		public string Descricao { get; set; }
+		public Genero Genero { get; set; }
 		public OrientacaoSexual OrientacaoSexual { get; set; }
-		public int OrientacaoSexualId { get; set; }
-		public Religiao Religiao { get; set; }
-		public int ReligiaoId { get; set; }
+		//public int OrientacaoSexualId { get; set; }
+		//public Religiao Religiao { get; set; }
+		//public int ReligiaoId { get; set; }
 		public OrientacaoPolitica OrientacaoPolitica { get; set; }
 		public int? OrientacaoPoliticaId { get; set; }
 		public TipoDeConsumoBebida TipoDeConsumoBebida { get; set; }
@@ -44,5 +45,18 @@ namespace FindU
 
 		public string UsuarioId { get; set; }
 		public virtual User Usuario { get; set; }
+	}
+
+	public enum Genero
+	{
+		Masculino = 1,
+		Feminino = 2
+	}
+
+	public enum OrientacaoSexual
+	{
+		Hetero = 1,
+		Homo = 2,
+		Bi = 3
 	}
 }
