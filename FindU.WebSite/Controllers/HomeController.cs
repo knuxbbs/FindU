@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using FindU.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using FindU.WebSite.Models;
 
 namespace FindU.WebSite.Controllers
 {

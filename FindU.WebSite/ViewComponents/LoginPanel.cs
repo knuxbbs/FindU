@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FindU.Application.ViewModels.Identity.AccountViewModels;
 using FindU.Infra.Data.Identity.Configuration;
-using FindU.WebSite.Models.AccountViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindU.WebSite.ViewComponents

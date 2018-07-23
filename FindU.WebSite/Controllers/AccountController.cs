@@ -9,13 +9,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using FindU.WebSite.Models.AccountViewModels;
-using FindU.WebSite.Services;
 using FindU.Application;
 using FindU.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using FindU.Application.Components;
+using FindU.Application.Extensions;
+using FindU.Application.ViewModels.Identity.AccountViewModels;
+using FindU.WebSite.Extensions;
 
 namespace FindU.WebSite.Controllers
 {
@@ -287,8 +288,9 @@ namespace FindU.WebSite.Controllers
 				return RedirectToAction(nameof(Login));
 			}
 
-			// Sign in the user with this external login provider if the user already has a login.
-			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+			//Verifica se usuário já está cadastrado na base de dados da aplicação
+			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, 
+				info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
 			if (result.Succeeded)
 			{
@@ -306,7 +308,9 @@ namespace FindU.WebSite.Controllers
 			ViewData["LoginProvider"] = info.LoginProvider;
 
 			var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-			var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+			var phone = info.Principal.FindFirstValue(ClaimTypes.MobilePhone);
+			var name = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+			var surname = info.Principal.FindFirstValue(ClaimTypes.Surname);
 			var birthday = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
 			var gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
 			var location = info.Principal.FindFirstValue(ClaimTypes.Locality);
@@ -315,10 +319,12 @@ namespace FindU.WebSite.Controllers
 
 			var externalLoginViewModel = new ExternalLoginViewModel
 			{
-				Email = email,
-				Nome = name,
-				DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
 				GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 1,
+				Nome = name,
+				Sobrenome = surname,
+				DataNascimento = DateTime.Parse(birthday, new CultureInfo("en-US")),
+				Email = email,
+				PhoneNumber = phone,
 				Localizacao = location,
 				CaminhoFoto = picture,
 				Cursos = new SelectList(_cursoAppService.GetAll().OrderBy(x => x.Nome),
@@ -361,28 +367,21 @@ namespace FindU.WebSite.Controllers
 					throw new ApplicationException("Error loading external login information during confirmation.");
 				}
 
-				var user = new ApplicationUser
-				{
-					UserName = model.Email,
-					Email = model.Email,
-					PhoneNumber = model.PhoneNumber
-				};
+				var estudante = await _estudanteAppService.Add(model);
 
-				var result = await _userManager.CreateAsync(user);
+				//if (result.Succeeded)
+				//{
+				//	result = await _userManager.AddLoginAsync(user, info);
 
-				if (result.Succeeded)
-				{
-					result = await _userManager.AddLoginAsync(user, info);
+				//	if (result.Succeeded)
+				//	{
+				//		await _signInManager.SignInAsync(user, isPersistent: false);
+				//		_logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+				//		return RedirectToLocal(returnUrl);
+				//	}
+				//}
 
-					if (result.Succeeded)
-					{
-						await _signInManager.SignInAsync(user, isPersistent: false);
-						_logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-						return RedirectToLocal(returnUrl);
-					}
-				}
-
-				AddErrors(result);
+				//AddErrors(result);
 			}
 
 			ViewData["ReturnUrl"] = returnUrl;

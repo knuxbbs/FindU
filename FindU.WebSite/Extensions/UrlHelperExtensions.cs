@@ -1,6 +1,7 @@
 using FindU.WebSite.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Microsoft.AspNetCore.Mvc
+namespace FindU.WebSite.Extensions
 {
     public static class UrlHelperExtensions
     {

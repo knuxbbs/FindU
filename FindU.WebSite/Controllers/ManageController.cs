@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using FindU.Application.Extensions;
 using FindU.Infra.Data.Identity.Configuration;
 using FindU.Infra.Data.Identity.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -10,9 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using FindU.WebSite.Models.ManageViewModels;
-using FindU.WebSite.Services;
 using FindU.Application.Interfaces;
+using FindU.Application.ViewModels.Identity.ManageViewModels;
+using FindU.WebSite.Extensions;
 
 namespace FindU.WebSite.Controllers
 {
