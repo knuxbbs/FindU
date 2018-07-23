@@ -1,5 +1,6 @@
 ﻿using FindU.Infra.Data.Mappings;
 using FindU.Infra.Data.Mappings.Identity;
+using FindU.Infra.Data.Mappings.Joins;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -36,6 +37,10 @@ namespace FindU.Infra.Data
 			builder.ApplyConfiguration(new AreaConhecimentoMap());
 			builder.ApplyConfiguration(new UnidadeUniversitariaMap());
 			builder.ApplyConfiguration(new CursoMap());
+			builder.ApplyConfiguration(new OrientacaoPoliticaMap());
+			builder.ApplyConfiguration(new TipoDeConsumoBebidaMap());
+			builder.ApplyConfiguration(new TipoDeAtracaoMap());
+			builder.ApplyConfiguration(new EstudanteHasTipoDeAtracaoMap());
 			builder.ApplyConfiguration(new EstudanteMap());
 		}
 

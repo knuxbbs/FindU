@@ -8,7 +8,9 @@
 <hr />
 
 <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-	<div asp-validation-summary="All" class="text-danger"></div>
+	<input type="hidden" asp-for="CaminhoFoto" />
+	<input type="hidden" asp-for="Email" />
+
 	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group">
@@ -39,7 +41,7 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="PhoneNumber"></label>
-				<input asp-for="PhoneNumber" class="form-control" disabled />
+				<input asp-for="PhoneNumber" class="form-control" data-inputmask="'mask': '(99) 99999-9999'" />
 				<span asp-validation-for="PhoneNumber" class="text-danger"></span>
 			</div>
 			<div class="form-group">
@@ -49,18 +51,52 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="CursoId"></label>
-				<select asp-for="CursoId" asp-items="Model.Cursos" class="form-control"></select>
+				<select asp-for="CursoId" asp-items="Model.Cursos" class="form-control">
+					<option disabled selected></option>
+				</select>
 				<span asp-validation-for="CursoId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Matricula"></label>
-				<input asp-for="Matricula" class="form-control" />
+				<input asp-for="Matricula" class="form-control" data-inputmask="'mask': '999999999'" />
 				<span asp-validation-for="Matricula" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Sobre"></label>
-				<textarea asp-for="Sobre" class="form-control" rows="5"></textarea>
+				<textarea asp-for="Sobre" class="form-control no-resize" rows="5"></textarea>
 				<span asp-validation-for="Sobre" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="OrientacaoPoliticaId"></label>
+				<select asp-for="OrientacaoPoliticaId" asp-items="Model.OrientacoesPoliticas" class="form-control">
+					<option value="0">Não há resposta</option>
+				</select>
+				<span asp-validation-for="OrientacaoPoliticaId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="TipoDeConsumoBebidaId"></label>
+				<select asp-for="TipoDeConsumoBebidaId" asp-items="Model.TiposDeConsumoBebida" class="form-control">
+					<option value="0">Não há resposta</option>
+				</select>
+				<span asp-validation-for="TipoDeConsumoBebidaId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="TiposDeAtracao" class="control-label">O que me atrai</label>
+				<ul class="list-unstyled">
+					@for (var i = 0; i < Model.TiposDeAtracao.Length; i++)
+					{
+						<li>
+							<div class="checkbox">
+								<label for="chkTipoAtracao_@Model.TiposDeAtracao[i].Id">
+									<input id="chkTipoAtracao_@Model.TiposDeAtracao[i].Id" type="checkbox" asp-for="@Model.TiposDeAtracao[i].IsChecked" />
+									@Model.TiposDeAtracao[i].Text
+								</label>
+								<input id="tipoAtracaoId_@Model.TiposDeAtracao[i].Id" type="hidden" asp-for="@Model.TiposDeAtracao[i].Id" />
+								<input id="txtTipoAtracao_@Model.TiposDeAtracao[i].Id" type="hidden" asp-for="@Model.TiposDeAtracao[i].Text" />
+							</div>
+						</li>
+					}
+				</ul>
 			</div>
 			<div class="form-group">
 				<label asp-for="GenerosInteresse" class="control-label">Interessado em</label>
@@ -68,19 +104,35 @@
 					@for (var i = 0; i < Model.GenerosInteresse.Length; i++)
 					{
 						<li>
-							<input id="chkAtividade_@Model.GenerosInteresse[i].Id" type="checkbox" asp-for="@Model.GenerosInteresse[i].IsChecked" />
-							<label for="chkAtividade_@Model.GenerosInteresse[i].Id">@Model.GenerosInteresse[i].Text</label>
-							<input id="atividadeId_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Id" />
-							<input id="txtAtividade_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Text" />
+							<div class="checkbox-inline">
+								<label for="chkGeneroInteresse_@Model.GenerosInteresse[i].Id">
+									<input id="chkGeneroInteresse_@Model.GenerosInteresse[i].Id" type="checkbox" asp-for="@Model.GenerosInteresse[i].IsChecked" />
+									@Model.GenerosInteresse[i].Text
+								</label>
+							</div>
+							<input id="generoInteresseId_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Id" />
+							<input id="txtGeneroInteresse_@Model.GenerosInteresse[i].Id" type="hidden" asp-for="@Model.GenerosInteresse[i].Text" />
 						</li>
 					}
 				</ul>
+
+				@if (Model.GenerosInteresse.Any())
+				{
+					<span asp-validation-for="GenerosInteresse[0].IsChecked" class="text-danger"></span>
+				}
 			</div>
-			<button type="submit" class="btn btn-default">Cadastrar</button>
+			<button type="submit" class="btn btn-default">Finalizar cadastro</button>
 		</div>
 	</div>
 </form>
 
 @section Scripts {
+	<script>
+		$(function () {
+			@* Habilita o InputMask *@
+			$(":input").inputmask();
+		});
+	</script>
+
 	@await Html.PartialAsync("_ValidationScriptsPartial")
 }

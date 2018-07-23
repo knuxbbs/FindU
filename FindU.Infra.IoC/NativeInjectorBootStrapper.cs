@@ -45,6 +45,11 @@ namespace FindU.Infra.IoC
 			//Infra - Data
 			services.AddScoped<ICursoAppService, CursoAppService>();
 			services.AddScoped<ICursoRepository, CursoRepository>();
+			services.AddScoped<IEstudanteAppService, EstudanteAppService>();
+			services.AddScoped<IEstudanteRepository, EstudanteRepository>();
+			services.AddScoped<IOrientacaoPoliticaRepository, OrientacaoPoliticaRepository>();
+			services.AddScoped<ITipoDeConsumoBebidaRepository, TipoDeConsumoBebidaRepository>();
+			services.AddScoped<ITipoDeAtracaoRepository, TipoDeAtracaoRepository>();
 		}
 	}
 }

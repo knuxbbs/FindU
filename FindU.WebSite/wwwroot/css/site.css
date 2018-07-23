@@ -30,6 +30,10 @@
 	margin: 0 auto;
 }
 
+.no-resize {
+	resize: none;
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;

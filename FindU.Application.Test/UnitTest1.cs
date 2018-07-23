@@ -8,11 +8,11 @@ namespace FindU.Application.Test
 		[TestMethod]
 		public void TestMethod1()
 		{
-			var class1 = new Class1();
+			var class1 = new SupacDataImporter();
 			var curso = new Curso { CodigoSupac = 387 };
 			//var curso = new Curso { CodigoSupac = 196 };
 
-			class1.VerificarMatricula("215215179", curso);
+			class1.ValidarMatricula("215215179", curso);
 		}
 	}
 }

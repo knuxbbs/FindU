@@ -1,6 +1,5 @@
 ﻿using FindU.Application.Interfaces;
 using FindU.Interfaces;
-using System.Collections.Generic;
 
 namespace FindU.Application.Services
 {
@@ -11,11 +10,6 @@ namespace FindU.Application.Services
 		public CursoAppService(ICursoRepository cursoRepository) : base(cursoRepository)
 		{
 			_cursoRepository = cursoRepository;
-		}
-
-		public IEnumerable<Curso> Listar()
-		{
-			return _cursoRepository.GetAll();
 		}
 	}
 }

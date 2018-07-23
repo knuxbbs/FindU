@@ -1,5 +1,8 @@
 ﻿using FindU.Identity;
+using FindU.Models;
+using FindU.Models.Joins;
 using System;
+using System.Collections.Generic;
 
 namespace FindU
 {
@@ -28,7 +31,10 @@ namespace FindU
 		public Religiao Religiao { get; set; }
 		public int ReligiaoId { get; set; }
 		public OrientacaoPolitica OrientacaoPolitica { get; set; }
-		public int OrientacaoPoliticaId { get; set; }
+		public int? OrientacaoPoliticaId { get; set; }
+		public TipoDeConsumoBebida TipoDeConsumoBebida { get; set; }
+		public int? TipoDeConsumoBebidaId { get; set; }
+		public IEnumerable<EstudanteHasTipoDeAtracao> TiposDeAtracao { get; set; }
 
 		public string Localizacao { get; set; }
 		//public bool DeGatos { get; set; }

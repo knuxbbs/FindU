@@ -35,6 +35,8 @@ namespace FindU.Infra.Data.Mappings
 			builder.Property(c => c.CursoId)
 				.IsRequired();
 
+			builder.HasMany(c => c.TiposDeAtracao);
+
 			builder.Property(c => c.OrientacaoSexualId)
 				.IsRequired();
 		}

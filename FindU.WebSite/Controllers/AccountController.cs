@@ -15,6 +15,7 @@ using FindU.Application;
 using FindU.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using FindU.Application.Components;
 
 namespace FindU.WebSite.Controllers
 {
@@ -25,6 +26,7 @@ namespace FindU.WebSite.Controllers
 		private readonly ApplicationUserManager _userManager;
 		private readonly ApplicationSignInManager _signInManager;
 		private readonly ICursoAppService _cursoAppService;
+		private readonly IEstudanteAppService _estudanteAppService;
 		private readonly IEmailSender _emailSender;
 		private readonly ILogger _logger;
 
@@ -32,12 +34,14 @@ namespace FindU.WebSite.Controllers
 			ApplicationUserManager userManager,
 			ApplicationSignInManager signInManager,
 			ICursoAppService cursoAppService,
+			IEstudanteAppService estudanteAppService,
 			IEmailSender emailSender,
 			ILogger<AccountController> logger)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_cursoAppService = cursoAppService;
+			_estudanteAppService = estudanteAppService;
 			_emailSender = emailSender;
 			_logger = logger;
 		}
@@ -317,9 +321,26 @@ namespace FindU.WebSite.Controllers
 				GeneroId = gender == "male" ? 1 : gender == "female" ? 2 : 1,
 				Localizacao = location,
 				CaminhoFoto = picture,
-				Cursos = new SelectList(_cursoAppService.Listar().OrderBy(x => x.Nome),
+				Cursos = new SelectList(_cursoAppService.GetAll().OrderBy(x => x.Nome),
 					"Id",
-					"Nome")
+					"Nome"),
+				OrientacoesPoliticas = new SelectList(_estudanteAppService.ListarOrientacoesPoliticas(),
+					"Id",
+					"Nome"),
+				TiposDeConsumoBebida = new SelectList(_estudanteAppService.ListarTiposDeConsumoBebida(),
+					"Id",
+					"Nome"),
+				TiposDeAtracao = _estudanteAppService.ListarTiposDeAtracao().Select(x =>
+					new CheckBoxListItem
+					{
+						Id = x.Id,
+						Text = x.Nome
+					}).ToArray(),
+				GenerosInteresse = new[]
+					{
+						new CheckBoxListItem{Id = 1, Text = "Homens"},
+						new CheckBoxListItem{Id = 2, Text = "Mulheres"},
+					}
 			};
 
 			return View(nameof(ExternalLogin), externalLoginViewModel);
@@ -334,15 +355,25 @@ namespace FindU.WebSite.Controllers
 			{
 				// Get the information about the user from the external login provider
 				var info = await _signInManager.GetExternalLoginInfoAsync();
+
 				if (info == null)
 				{
 					throw new ApplicationException("Error loading external login information during confirmation.");
 				}
-				var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+				var user = new ApplicationUser
+				{
+					UserName = model.Email,
+					Email = model.Email,
+					PhoneNumber = model.PhoneNumber
+				};
+
 				var result = await _userManager.CreateAsync(user);
+
 				if (result.Succeeded)
 				{
 					result = await _userManager.AddLoginAsync(user, info);
+
 					if (result.Succeeded)
 					{
 						await _signInManager.SignInAsync(user, isPersistent: false);
@@ -350,6 +381,7 @@ namespace FindU.WebSite.Controllers
 						return RedirectToLocal(returnUrl);
 					}
 				}
+
 				AddErrors(result);
 			}
 
@@ -467,15 +499,32 @@ namespace FindU.WebSite.Controllers
 
 		[HttpGet]
 		[AllowAnonymous]
-		public JsonResult ValidarMatricula(string matricula)
+		public JsonResult ValidarMatricula(string matricula, int cursoId)
 		{
-			var validacao = new Class1();
+			var curso = _cursoAppService.GetById(cursoId);
 
-			var curso = new Curso { CodigoSupac = 112 };
+			if (curso == null || string.IsNullOrEmpty(matricula))
+			{
+				return Json(true);
+			}
 
-			if (!validacao.VerificarMatricula(matricula, curso))
+			if (matricula.Length < 9)
 			{
 				return Json($"Matrícula inválida.");
+			}
+
+			var dataImporter = new SupacDataImporter();
+
+			try
+			{
+				if (!dataImporter.ValidarMatricula(matricula, curso))
+				{
+					return Json($"Matrícula inválida.");
+				}
+			}
+			catch (Exception)
+			{
+				return Json($"Não foi possível validar a matrícula.");
 			}
 
 			return Json(true);

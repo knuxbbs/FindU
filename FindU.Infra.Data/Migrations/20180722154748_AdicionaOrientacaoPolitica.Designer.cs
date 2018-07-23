@@ -4,14 +4,16 @@ using FindU.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FindU.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180722154748_AdicionaOrientacaoPolitica")]
+    partial class AdicionaOrientacaoPolitica
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,7 +197,7 @@ namespace FindU.Infra.Data.Migrations
                         .HasColumnType("varchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int?>("OrientacaoPoliticaId");
+                    b.Property<int>("OrientacaoPoliticaId");
 
                     b.Property<int>("OrientacaoSexualId");
 
@@ -203,8 +205,6 @@ namespace FindU.Infra.Data.Migrations
 
                     b.Property<string>("Sobre")
                         .IsRequired();
-
-                    b.Property<int?>("TipoDeConsumoBebidaId");
 
                     b.Property<string>("UsuarioId");
 
@@ -217,8 +217,6 @@ namespace FindU.Infra.Data.Migrations
                     b.HasIndex("OrientacaoSexualId");
 
                     b.HasIndex("ReligiaoId");
-
-                    b.HasIndex("TipoDeConsumoBebidaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -403,77 +401,6 @@ namespace FindU.Infra.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FindU.Models.Joins.EstudanteHasTipoDeAtracao", b =>
-                {
-                    b.Property<int>("EstudanteId");
-
-                    b.Property<int>("TipoDeAtracaoId");
-
-                    b.HasKey("EstudanteId", "TipoDeAtracaoId");
-
-                    b.HasIndex("TipoDeAtracaoId");
-
-                    b.ToTable("EstudanteHasTipoDeAtracao");
-                });
-
-            modelBuilder.Entity("FindU.Models.TipoDeAtracao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TipoDeAtracao");
-
-                    b.HasData(
-                        new { Id = 1, Nome = "Convicção" },
-                        new { Id = 2, Nome = "Luz de velas" },
-                        new { Id = 3, Nome = "Material erótico" },
-                        new { Id = 4, Nome = "Inteligência" },
-                        new { Id = 5, Nome = "Demonstrações públicas de afeto" },
-                        new { Id = 6, Nome = "Sarcasmo" },
-                        new { Id = 7, Nome = "Tatuagens" },
-                        new { Id = 8, Nome = "Tempestades" },
-                        new { Id = 9, Nome = "Piercing(s)" },
-                        new { Id = 10, Nome = "Dançar" },
-                        new { Id = 11, Nome = "Flertar" },
-                        new { Id = 12, Nome = "Cabelos compridos" },
-                        new { Id = 13, Nome = "Poder" },
-                        new { Id = 14, Nome = "Nadar nu" },
-                        new { Id = 15, Nome = "Aventura" },
-                        new { Id = 16, Nome = "Riqueza material" }
-                    );
-                });
-
-            modelBuilder.Entity("FindU.Models.TipoDeConsumoBebida", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TipoDeConsumoBebida");
-
-                    b.HasData(
-                        new { Id = 1, Nome = "Socialmente" },
-                        new { Id = 2, Nome = "De vez em quando" },
-                        new { Id = 3, Nome = "Regularmente" },
-                        new { Id = 4, Nome = "Excessivamente" }
-                    );
-                });
-
             modelBuilder.Entity("FindU.OrientacaoPolitica", b =>
                 {
                     b.Property<int>("Id")
@@ -599,7 +526,8 @@ namespace FindU.Infra.Data.Migrations
 
                     b.HasOne("FindU.OrientacaoPolitica", "OrientacaoPolitica")
                         .WithMany()
-                        .HasForeignKey("OrientacaoPoliticaId");
+                        .HasForeignKey("OrientacaoPoliticaId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FindU.OrientacaoSexual", "OrientacaoSexual")
                         .WithMany()
@@ -610,10 +538,6 @@ namespace FindU.Infra.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ReligiaoId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FindU.Models.TipoDeConsumoBebida", "TipoDeConsumoBebida")
-                        .WithMany()
-                        .HasForeignKey("TipoDeConsumoBebidaId");
 
                     b.HasOne("FindU.Identity.User", "Usuario")
                         .WithMany()
@@ -662,21 +586,6 @@ namespace FindU.Infra.Data.Migrations
                     b.HasOne("FindU.Identity.User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("FindU.Models.Joins.EstudanteHasTipoDeAtracao", b =>
-                {
-                    b.HasOne("FindU.Estudante", "Estudante")
-                        .WithMany("TiposDeAtracao")
-                        .HasForeignKey("EstudanteId")
-                        .HasConstraintName("FK_EstudanteHasTipoDeAtracao_EstudanteId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FindU.Models.TipoDeAtracao", "TipoDeAtracao")
-                        .WithMany("Estudantes")
-                        .HasForeignKey("TipoDeAtracaoId")
-                        .HasConstraintName("FK_EstudanteHasTipoDeAtracao_TipoDeAtracaoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
