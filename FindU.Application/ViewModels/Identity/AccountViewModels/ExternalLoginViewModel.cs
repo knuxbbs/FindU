@@ -69,12 +69,12 @@ namespace FindU.Application.ViewModels.Identity.AccountViewModels
 		public SelectList Religioes { get; set; }
 
 		[Display(Name = "Orientação política")]
-		public int OrientacaoPoliticaId { get; set; }
+		public int? OrientacaoPoliticaId { get; set; }
 
 		public SelectList OrientacoesPoliticas { get; set; }
 
 		[Display(Name = "Bebo")]
-		public int TipoDeConsumoBebidaId { get; set; }
+		public int? TipoDeConsumoBebidaId { get; set; }
 
 		public SelectList TiposDeConsumoBebida { get; set; }
 

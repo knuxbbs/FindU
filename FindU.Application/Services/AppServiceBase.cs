@@ -1,4 +1,5 @@
-﻿using FindU.Application.Interfaces;
+﻿using System.Collections.Generic;
+using FindU.Application.Interfaces;
 using FindU.Interfaces;
 using System.Linq;
 
@@ -14,6 +15,11 @@ namespace FindU.Application.Services
 		}
 
 		public void Add(TEntity obj)
+		{
+			_repositoryBase.Add(obj);
+		}
+
+		public void Add(IEnumerable<TEntity> obj)
 		{
 			_repositoryBase.Add(obj);
 		}

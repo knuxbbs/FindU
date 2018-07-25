@@ -8,9 +8,11 @@ using FindU.Infra.Data.Repositories.Identity;
 using FindU.Infra.IoC.Extensions;
 using FindU.Interfaces;
 using FindU.Interfaces.Repositories.Identity;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FindU.Infra.IoC
 {
@@ -24,7 +26,7 @@ namespace FindU.Infra.IoC
 			services.AddIdentity<ApplicationUser, ApplicationRole>()
 				.AddCustomStores()
 				.AddDefaultTokenProviders();
-			
+
 			//Infra - Identity
 			services.AddScoped<IRoleClaimRepository, RoleClaimRepository>();
 			services.AddScoped<IRoleRepository, RoleRepository>();
@@ -50,6 +52,13 @@ namespace FindU.Infra.IoC
 			services.AddScoped<IOrientacaoPoliticaRepository, OrientacaoPoliticaRepository>();
 			services.AddScoped<ITipoDeConsumoBebidaRepository, TipoDeConsumoBebidaRepository>();
 			services.AddScoped<ITipoDeAtracaoRepository, TipoDeAtracaoRepository>();
+		}
+
+	    public static void RegisterServicesForTest(IServiceCollection services, string connection)
+	    {
+		    services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());
+
+			RegisterServices(services, connection);
 		}
 	}
 }

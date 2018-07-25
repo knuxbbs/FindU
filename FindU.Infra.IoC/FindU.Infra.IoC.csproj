@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FindU.Application\FindU.Application.csproj" />
     <ProjectReference Include="..\FindU.Infra.Data\FindU.Infra.Data.csproj" />
   </ItemGroup>

@@ -78,8 +78,8 @@ namespace FindU.Application.Services
 						Descricao = model.Sobre,
 						Genero = genero,
 						OrientacaoSexual = orientacaoSexual,
-						OrientacaoPoliticaId = model.OrientacaoPoliticaId,
-						TipoDeConsumoBebidaId = model.TipoDeConsumoBebidaId,
+						OrientacaoPoliticaId = model.OrientacaoPoliticaId == 0 ? null : model.OrientacaoPoliticaId,
+						TipoDeConsumoBebidaId = model.TipoDeConsumoBebidaId == 0 ? null : model.TipoDeConsumoBebidaId,
 						TiposDeAtracao = model.TiposDeAtracao.Where(x => x.IsChecked)
 							.Select(tipoDeAtracao => new EstudanteHasTipoDeAtracao
 							{

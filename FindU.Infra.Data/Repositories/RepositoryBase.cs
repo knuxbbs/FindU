@@ -1,6 +1,7 @@
 ﻿using FindU.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FindU.Infra.Data.Repositories
@@ -19,6 +20,12 @@ namespace FindU.Infra.Data.Repositories
 		public void Add(TEntity obj)
 		{
 			DbSet.Add(obj);
+			SaveChanges();
+		}
+
+		public void Add(IEnumerable<TEntity> obj)
+		{
+			DbSet.AddRange(obj);
 			SaveChanges();
 		}
 
