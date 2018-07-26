@@ -33,9 +33,9 @@ namespace FindU.WebSite.Controllers
 
 		public IActionResult Like(string idUsuario)
 		{
-			_estudanteAppService.Curtir(User, idUsuario);
+			var existeMatch = _estudanteAppService.Curtir(User, idUsuario);
 
-			return Json("foi");
+			return Json(existeMatch);
 		}
 	}
 }

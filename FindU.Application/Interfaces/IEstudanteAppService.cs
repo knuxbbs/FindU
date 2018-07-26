@@ -12,7 +12,7 @@ namespace FindU.Application.Interfaces
 	{
 		Task<Estudante> Add(ExternalLoginViewModel model, ExternalLoginInfo info);
 		EstudanteRollViewModel ObterEstudante(ClaimsPrincipal user, EstudanteRollViewModel previousViewModel = null);
-		void Curtir(ClaimsPrincipal user, string idUsuarioCurtido);
+		bool Curtir(ClaimsPrincipal user, string idUsuarioCurtido);
 		IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas();
 		IEnumerable<TipoDeAtracao> ListarTiposDeAtracao();
 		IEnumerable<TipoDeConsumoBebida> ListarTiposDeConsumoBebida();

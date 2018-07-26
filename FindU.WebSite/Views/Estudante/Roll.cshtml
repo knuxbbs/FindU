@@ -12,7 +12,7 @@
 	@for (var i = 0; i < Model.UsuariosDescartados.Count; i++)
 	{
 		<input type="hidden" value="@Model.UsuariosDescartados[i]" name="@Html.NameFor(model => model.UsuariosDescartados)"
-		       id="@(Html.IdFor(model => model.UsuariosDescartados))_@i" />
+			   id="@(Html.IdFor(model => model.UsuariosDescartados))_@i" />
 	}
 
 	<div class="row">
@@ -74,6 +74,22 @@
 	</div>
 </form>
 
+<div id="match-modal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<p>Match!</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 @section Scripts {
 	<script>
 		$(function () {
@@ -86,7 +102,9 @@
 					type: "POST",
 					datatype: "json",
 					success: function (data) {
-						
+						if (data) {
+							$("#match-modal").modal();
+						}
 					}
 				});
 			});

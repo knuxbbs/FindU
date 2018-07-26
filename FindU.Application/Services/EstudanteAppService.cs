@@ -213,7 +213,7 @@ namespace FindU.Application.Services
 			return estudanteRollViewModel;
 		}
 
-		public void Curtir(ClaimsPrincipal user, string idUsuarioCurtido)
+		public bool Curtir(ClaimsPrincipal user, string idUsuarioCurtido)
 		{
 			var idUsuario = _userManager.GetUserId(user);
 
@@ -223,6 +223,10 @@ namespace FindU.Application.Services
 				UsuarioCurtidoId = idUsuarioCurtido,
 				Data = DateTime.Now
 			});
+			
+			var match = _curtidaRepository.GetById(idUsuarioCurtido, idUsuario);
+
+			return match != null;
 		}
 
 		public IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas()

@@ -8,5 +8,10 @@ namespace FindU.Infra.Data.Repositories
 		public CurtidaRepository(ApplicationDbContext context) : base(context)
 		{
 		}
+
+		public Curtida GetById(string idUsuario, string idUsuarioCurtido)
+		{
+			return DbSet.Find(idUsuario, idUsuarioCurtido);
+		}
 	}
 }
