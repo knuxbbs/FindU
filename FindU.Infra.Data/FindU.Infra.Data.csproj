@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20180723184557_RenomeiaPropriedadeDeEstudante.cs" />
+    <Compile Remove="Migrations\20180726193944_AdicionaCurtidas.cs" />
+    <Compile Remove="Migrations\20180726194530_AdicionaCurtidas.cs" />
   </ItemGroup>
 
   <ItemGroup>

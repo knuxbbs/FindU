@@ -295,7 +295,7 @@ namespace FindU.WebSite.Controllers
 			if (result.Succeeded)
 			{
 				_logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-				return RedirectToLocal(returnUrl);
+				return RedirectToAction(nameof(EstudanteController.Roll), "Estudante");
 			}
 
 			if (result.IsLockedOut)
@@ -367,25 +367,26 @@ namespace FindU.WebSite.Controllers
 					throw new ApplicationException("Error loading external login information during confirmation.");
 				}
 
-				var estudante = await _estudanteAppService.Add(model);
+				var estudante = await _estudanteAppService.Add(model, info);
 
-				//if (result.Succeeded)
-				//{
-				//	result = await _userManager.AddLoginAsync(user, info);
+				if (estudante == null) return View(nameof(ExternalLogin), model);
 
-				//	if (result.Succeeded)
-				//	{
-				//		await _signInManager.SignInAsync(user, isPersistent: false);
-				//		_logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-				//		return RedirectToLocal(returnUrl);
-				//	}
-				//}
+				var applicationUser = await _userManager.FindByEmailAsync(estudante.Usuario.UserName);
 
-				//AddErrors(result);
+				await _signInManager.SignInAsync(applicationUser, false);
+				_logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+				return RedirectToAction(nameof(RegisterConfirmation));
 			}
 
 			ViewData["ReturnUrl"] = returnUrl;
 			return View(nameof(ExternalLogin), model);
+		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public IActionResult RegisterConfirmation()
+		{
+			return View();
 		}
 
 		[HttpGet]
@@ -509,7 +510,7 @@ namespace FindU.WebSite.Controllers
 
 			if (matricula.Length < 9)
 			{
-				return Json($"Matrícula inválida.");
+				return Json("Matrícula inválida.");
 			}
 
 			var dataImporter = new SupacDataImporter();
@@ -518,12 +519,12 @@ namespace FindU.WebSite.Controllers
 			{
 				if (!dataImporter.ValidarMatricula(matricula, curso))
 				{
-					return Json($"Matrícula inválida.");
+					return Json("Matrícula inválida.");
 				}
 			}
 			catch (Exception)
 			{
-				return Json($"Não foi possível validar a matrícula.");
+				return Json("Não foi possível validar a matrícula.");
 			}
 
 			return Json(true);

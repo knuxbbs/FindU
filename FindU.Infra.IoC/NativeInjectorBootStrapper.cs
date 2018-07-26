@@ -21,7 +21,8 @@ namespace FindU.Infra.IoC
 		public static void RegisterServices(IServiceCollection services, string connection)
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(connection));
+				options.UseLazyLoadingProxies()
+					.UseSqlServer(connection));
 
 			services.AddIdentity<ApplicationUser, ApplicationRole>()
 				.AddCustomStores()
@@ -52,6 +53,7 @@ namespace FindU.Infra.IoC
 			services.AddScoped<IOrientacaoPoliticaRepository, OrientacaoPoliticaRepository>();
 			services.AddScoped<ITipoDeConsumoBebidaRepository, TipoDeConsumoBebidaRepository>();
 			services.AddScoped<ITipoDeAtracaoRepository, TipoDeAtracaoRepository>();
+			services.AddScoped<ICurtidaRepository, CurtidaRepository>();
 		}
 
 	    public static void RegisterServicesForTest(IServiceCollection services, string connection)

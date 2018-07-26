@@ -43,6 +43,7 @@ namespace FindU.Infra.Data
 			builder.ApplyConfiguration(new TipoDeAtracaoMap());
 			builder.ApplyConfiguration(new EstudanteHasTipoDeAtracaoMap());
 			builder.ApplyConfiguration(new EstudanteMap());
+			builder.ApplyConfiguration(new CurtidaMap());
 		}
 
 		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

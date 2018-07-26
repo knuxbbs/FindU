@@ -1,5 +1,7 @@
-﻿using FindU.Interfaces;
+﻿using System.Linq;
+using FindU.Interfaces;
 using FindU.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FindU.Infra.Data.Repositories
 {
@@ -7,6 +9,18 @@ namespace FindU.Infra.Data.Repositories
 	{
 		public EstudanteRepository(ApplicationDbContext context) : base(context)
 		{
+		}
+
+		public Estudante ObterPorUsuario(string idUsuario)
+		{
+			return DbSet
+				.Include(x => x.Usuario)
+				.SingleOrDefault(x => x.UsuarioId == idUsuario);
+		}
+
+		public IQueryable<Estudante> ListarPorGenero(Genero genero)
+		{
+			return DbSet.Where(x => x.Genero == genero);
 		}
 	}
 }

@@ -6,12 +6,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
+using FindU.Application.ViewModels;
 using FindU.Application.ViewModels.Identity.AccountViewModels;
 using FindU.Infra.Data.Identity.Configuration;
 using FindU.Infra.Data.Identity.Models;
 using FindU.Models.Joins;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 
 namespace FindU.Application.Services
@@ -24,6 +27,7 @@ namespace FindU.Application.Services
 		private readonly ITipoDeAtracaoRepository _tipoDeAtracaoRepository;
 		private readonly ITipoDeConsumoBebidaRepository _tipoDeConsumoBebidaRepository;
 		private readonly ICursoRepository _cursoRepository;
+		private readonly ICurtidaRepository _curtidaRepository;
 		private readonly IHostingEnvironment _hostingEnvironment;
 
 		public EstudanteAppService(ApplicationUserManager userManager,
@@ -32,6 +36,7 @@ namespace FindU.Application.Services
 			ITipoDeAtracaoRepository tipoDeAtracaoRepository,
 			ITipoDeConsumoBebidaRepository tipoDeConsumoBebidaRepository,
 			ICursoRepository cursoRepository,
+			ICurtidaRepository curtidaRepository,
 			IHostingEnvironment hostingEnvironment) : base(estudanteRepository)
 		{
 			_userManager = userManager;
@@ -40,11 +45,14 @@ namespace FindU.Application.Services
 			_tipoDeAtracaoRepository = tipoDeAtracaoRepository;
 			_tipoDeConsumoBebidaRepository = tipoDeConsumoBebidaRepository;
 			_cursoRepository = cursoRepository;
+			_curtidaRepository = curtidaRepository;
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-		public async Task<Estudante> Add(ExternalLoginViewModel model)
+		public async Task<Estudante> Add(ExternalLoginViewModel model, ExternalLoginInfo info = null)
 		{
+			Estudante estudante = null;
+
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
 				var curso = _cursoRepository.GetById(model.CursoId);
@@ -69,7 +77,7 @@ namespace FindU.Application.Services
 
 					var estudanteDto = await estudanteDataTask;
 
-					var estudante = new Estudante
+					estudante = new Estudante
 					{
 						Nome = model.Nome,
 						Sobrenome = model.Sobrenome,
@@ -93,12 +101,17 @@ namespace FindU.Application.Services
 					};
 
 					Add(estudante);
+
+					if (info != null)
+					{
+						await _userManager.AddLoginAsync(user, info);
+					}
 				}
 
 				scope.Complete();
 			}
 
-			return null;
+			return estudante;
 		}
 
 		private string SavePhoto(string emailUsuario, string photoUrl)
@@ -142,6 +155,75 @@ namespace FindU.Application.Services
 			}
 		}
 
+
+		public EstudanteRollViewModel ObterEstudante(ClaimsPrincipal user, EstudanteRollViewModel previousViewModel = null)
+		{
+			var idUsuario = _userManager.GetUserId(user);
+			var estudante = _estudanteRepository.ObterPorUsuario(idUsuario);
+
+			IEnumerable<Estudante> listaEstudantes;
+
+			switch (estudante.OrientacaoSexual)
+			{
+				case OrientacaoSexual.Hetero:
+					listaEstudantes = _estudanteRepository.ListarPorGenero(estudante.Genero == Genero.Masculino
+						? Genero.Feminino
+						: Genero.Masculino);
+
+					break;
+				case OrientacaoSexual.Homo:
+					listaEstudantes = _estudanteRepository.ListarPorGenero(estudante.Genero);
+
+					break;
+				case OrientacaoSexual.Bi:
+					listaEstudantes = _estudanteRepository.GetAll();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			var random = new Random();
+			var index = random.Next(0, listaEstudantes.Count());
+			var estudanteSelecionado = listaEstudantes.ElementAt(index);
+
+			var imgSrc = estudanteSelecionado.Genero == Genero.Masculino
+				? "https://loremflickr.com/320/240/man/all"
+				: "https://loremflickr.com/320/240/woman/all";
+
+			var estudanteRollViewModel = new EstudanteRollViewModel
+			{
+				CaminhoFoto = imgSrc,
+				Nome = estudanteSelecionado.Nome,
+				Idade = DateTime.Now.Year - estudanteSelecionado.DataNascimento.Year,
+				Descricao = estudanteSelecionado.Descricao,
+				OrientacaoPolitica = estudanteSelecionado.OrientacaoPolitica.Nome,
+				TipoDeConsumoBebida = estudanteSelecionado.TipoDeConsumoBebida.Nome,
+				TiposDeAtracao = estudanteSelecionado.TiposDeAtracao
+					.Select(x => x.TipoDeAtracao.Nome).ToArray(),
+				AreaConhecimento = estudanteSelecionado.Curso.UnidadeUniversitaria.AreaConhecimento.Nome,
+				AnoIngresso = estudanteSelecionado.AnoIngresso,
+				UsuarioId = estudanteSelecionado.UsuarioId
+			};
+
+			if (string.IsNullOrEmpty(previousViewModel?.UsuarioId)) return estudanteRollViewModel;
+
+			estudanteRollViewModel.UsuariosDescartados.Add(previousViewModel.UsuarioId);
+			estudanteRollViewModel.UsuariosDescartados.AddRange(previousViewModel.UsuariosDescartados);
+
+			return estudanteRollViewModel;
+		}
+
+		public void Curtir(ClaimsPrincipal user, string idUsuarioCurtido)
+		{
+			var idUsuario = _userManager.GetUserId(user);
+
+			_curtidaRepository.Add(new Curtida
+			{
+				UsuarioId = idUsuario,
+				UsuarioCurtidoId = idUsuarioCurtido,
+				Data = DateTime.Now
+			});
+		}
 
 		public IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas()
 		{

@@ -3,8 +3,8 @@
 	public class EstudanteHasTipoDeAtracao
     {
 		public int EstudanteId { get; set; }
-		public Estudante Estudante { get; set; }
+		public virtual Estudante Estudante { get; set; }
 		public int TipoDeAtracaoId { get; set; }
-		public TipoDeAtracao TipoDeAtracao { get; set; }
+		public virtual TipoDeAtracao TipoDeAtracao { get; set; }
 	}
 }

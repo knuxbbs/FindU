@@ -29,8 +29,9 @@ namespace FindU.Application.Test
 			supacDataImporter.ValidarMatricula("215215179", curso);
 		}
 
-		[TestMethod]
-		public async Task AdicionarUsuarios()
+		[DataRow(10)]
+		[DataTestMethod]
+		public async Task AdicionarUsuarios(int quantidade)
 		{
 			var services = new ServiceCollection();
 
@@ -73,7 +74,7 @@ namespace FindU.Application.Test
 						TipoDeAtracaoId = tipoDeAtracao.Id
 					}).ToList());
 
-			var estudantes = estudanteFaker.Generate(3);
+			var estudantes = estudanteFaker.Generate(quantidade);
 
 			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
@@ -85,7 +86,8 @@ namespace FindU.Application.Test
 
 					async void Action1()
 					{
-						var userFaker = new Faker<ApplicationUser>().RuleFor(c => c.UserName, y => y.Internet.Email(estudante.Nome, estudante.Sobrenome, "ufba.br"));
+						var userFaker = new Faker<ApplicationUser>()
+							.RuleFor(c => c.UserName, y => y.Internet.Email(estudante.Nome, estudante.Sobrenome, "ufba.br"));
 
 						user = userFaker.Generate();
 
@@ -101,7 +103,6 @@ namespace FindU.Application.Test
 					actions.Add(Action2);
 				}
 
-				//await actions.ForEachAsync();
 				await ForEachAsync(actions);
 
 				estudanteAppService.Add(estudantes);
@@ -109,7 +110,8 @@ namespace FindU.Application.Test
 				scope.Complete();
 			}
 		}
-		public static async Task ForEachAsync(IList<Action> enumerable)
+
+		private static async Task ForEachAsync(IEnumerable<Action> enumerable)
 		{
 			foreach (var action in enumerable)
 				await Task.Run(() => { action(); }).ConfigureAwait(false);
