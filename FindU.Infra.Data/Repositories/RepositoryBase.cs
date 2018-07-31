@@ -42,11 +42,18 @@ namespace FindU.Infra.Data.Repositories
 		public void Remove(TEntity obj)
 		{
 			DbSet.Remove(obj);
+			SaveChanges();
 		}
 
 		public void Update(TEntity obj)
 		{
 			DbSet.Update(obj);
+		}
+
+		public void Update(IEnumerable<TEntity> obj)
+		{
+			DbSet.UpdateRange(obj);
+			SaveChanges();
 		}
 
 		public int SaveChanges()

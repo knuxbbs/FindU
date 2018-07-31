@@ -43,6 +43,8 @@ namespace FindU.Infra.Data.Mappings
 
 			builder.Property(c => c.OrientacaoSexual)
 				.IsRequired();
+
+			builder.HasIndex(c => c.UsuarioId).IsUnique();
 		}
 	}
 }

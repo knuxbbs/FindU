@@ -20,7 +20,7 @@ namespace FindU.WebSite.Controllers
 		{
 			var viewModel = _estudanteAppService.ObterEstudante(User);
 
-			return View(viewModel);
+			return viewModel == null ? View("EndOfRoll") : View(viewModel);
 		}
 
 		[HttpPost]
@@ -28,14 +28,14 @@ namespace FindU.WebSite.Controllers
 		{
 			var viewModel = _estudanteAppService.ObterEstudante(User, estudanteRollViewModel);
 
-			return View(viewModel);
+			return viewModel == null ? View("EndOfRoll") : View(viewModel);
 		}
 
 		public IActionResult Like(string idUsuario)
 		{
-			var existeMatch = _estudanteAppService.Curtir(User, idUsuario);
+			var likeResult = _estudanteAppService.Curtir(User, idUsuario);
 
-			return Json(existeMatch);
+			return Json(likeResult);
 		}
 	}
 }

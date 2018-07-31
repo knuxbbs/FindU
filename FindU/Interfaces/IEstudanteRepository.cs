@@ -7,5 +7,6 @@ namespace FindU.Interfaces
 	{
 		Estudante ObterPorUsuario(string idUsuario);
 		IQueryable<Estudante> ListarPorGenero(Genero genero);
+		IQueryable<Estudante> ListarPorGenero(Genero genero, OrientacaoSexual orientacaoSexual);
 	}
 }

@@ -48,5 +48,10 @@ namespace FindU.Application.Services
 		{
 			_repositoryBase.Update(obj);
 		}
+
+		public void Update(IEnumerable<TEntity> obj)
+		{
+			_repositoryBase.Update(obj);
+		}
 	}
 }

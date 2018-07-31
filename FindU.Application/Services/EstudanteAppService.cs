@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -69,7 +70,7 @@ namespace FindU.Application.Services
 
 				if (result.Succeeded)
 				{
-					var caminhoFoto = SavePhoto(model.Email, model.CaminhoFoto);
+					//var caminhoFoto = SavePhoto(model.Email, model.CaminhoFoto);
 
 					var genero = model.GeneroId == 1 ? Genero.Masculino : Genero.Feminino;
 					var generosInteresse = model.GenerosInteresse.Where(x => x.IsChecked).Select(x => x.Text);
@@ -81,7 +82,7 @@ namespace FindU.Application.Services
 					{
 						Nome = model.Nome,
 						Sobrenome = model.Sobrenome,
-						CaminhoFoto = caminhoFoto,
+						CaminhoFoto = model.CaminhoFoto,
 						DataNascimento = model.DataNascimento,
 						Descricao = model.Sobre,
 						Genero = genero,
@@ -114,7 +115,7 @@ namespace FindU.Application.Services
 			return estudante;
 		}
 
-		private string SavePhoto(string emailUsuario, string photoUrl)
+		public string SavePhoto(string emailUsuario, string photoUrl)
 		{
 			string filePath;
 
@@ -128,6 +129,25 @@ namespace FindU.Application.Services
 				filePath = Path.Combine(folderPath, "facebook-profile.jpg");
 
 				webClient.DownloadFile(photoUrl, filePath);
+			}
+
+			return Path.GetRelativePath(_hostingEnvironment.ContentRootPath, filePath);
+		}
+
+		public async Task<string> SavePhotoAsync(string emailUsuario, string photoUrl)
+		{
+			//Define diretório para carregamento do arquivo
+			var folderPath = Path.Combine(_hostingEnvironment.ContentRootPath, "Uploads", "Users", emailUsuario, "Photos");
+
+			Directory.CreateDirectory(folderPath);
+
+			var filePath = Path.Combine(folderPath, "facebook-profile.jpg");
+
+			using (var httpClient = new HttpClient())
+			using (var contentStream = await httpClient.GetStreamAsync(photoUrl))
+			using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 1048576, true))
+			{
+				await contentStream.CopyToAsync(fileStream);
 			}
 
 			return Path.GetRelativePath(_hostingEnvironment.ContentRootPath, filePath);
@@ -167,12 +187,15 @@ namespace FindU.Application.Services
 			{
 				case OrientacaoSexual.Hetero:
 					listaEstudantes = _estudanteRepository.ListarPorGenero(estudante.Genero == Genero.Masculino
-						? Genero.Feminino
-						: Genero.Masculino);
+							? Genero.Feminino
+							: Genero.Masculino)
+						.Where(x => x.OrientacaoSexual == OrientacaoSexual.Bi ||
+						            x.OrientacaoSexual == OrientacaoSexual.Hetero);
 
 					break;
 				case OrientacaoSexual.Homo:
-					listaEstudantes = _estudanteRepository.ListarPorGenero(estudante.Genero);
+					listaEstudantes = _estudanteRepository.ListarPorGenero(estudante.Genero)
+						.Where(x => x.OrientacaoSexual == OrientacaoSexual.Homo);
 
 					break;
 				case OrientacaoSexual.Bi:
@@ -182,22 +205,25 @@ namespace FindU.Application.Services
 					throw new ArgumentOutOfRangeException();
 			}
 
+			if (previousViewModel != null)
+			{
+				listaEstudantes = listaEstudantes.Where(x => !previousViewModel.UsuariosDescartados.Contains(x.UsuarioId));
+			}
+
+			if (!listaEstudantes.Any()) return null;
+
 			var random = new Random();
 			var index = random.Next(0, listaEstudantes.Count());
 			var estudanteSelecionado = listaEstudantes.ElementAt(index);
 
-			var imgSrc = estudanteSelecionado.Genero == Genero.Masculino
-				? "https://loremflickr.com/320/240/man/all"
-				: "https://loremflickr.com/320/240/woman/all";
-
 			var estudanteRollViewModel = new EstudanteRollViewModel
 			{
-				CaminhoFoto = imgSrc,
+				CaminhoFoto = estudanteSelecionado.CaminhoFoto,
 				Nome = estudanteSelecionado.Nome,
 				Idade = DateTime.Now.Year - estudanteSelecionado.DataNascimento.Year,
 				Descricao = estudanteSelecionado.Descricao,
-				OrientacaoPolitica = estudanteSelecionado.OrientacaoPolitica.Nome,
-				TipoDeConsumoBebida = estudanteSelecionado.TipoDeConsumoBebida.Nome,
+				OrientacaoPolitica = estudanteSelecionado.OrientacaoPolitica?.Nome,
+				TipoDeConsumoBebida = estudanteSelecionado.TipoDeConsumoBebida?.Nome,
 				TiposDeAtracao = estudanteSelecionado.TiposDeAtracao
 					.Select(x => x.TipoDeAtracao.Nome).ToArray(),
 				AreaConhecimento = estudanteSelecionado.Curso.UnidadeUniversitaria.AreaConhecimento.Nome,
@@ -205,28 +231,46 @@ namespace FindU.Application.Services
 				UsuarioId = estudanteSelecionado.UsuarioId
 			};
 
-			if (string.IsNullOrEmpty(previousViewModel?.UsuarioId)) return estudanteRollViewModel;
+			if (previousViewModel != null)
+			{
+				estudanteRollViewModel.UsuariosDescartados.AddRange(previousViewModel.UsuariosDescartados);
+			}
 
-			estudanteRollViewModel.UsuariosDescartados.Add(previousViewModel.UsuarioId);
-			estudanteRollViewModel.UsuariosDescartados.AddRange(previousViewModel.UsuariosDescartados);
+			estudanteRollViewModel.UsuariosDescartados.Add(estudanteRollViewModel.UsuarioId);
 
 			return estudanteRollViewModel;
 		}
 
-		public bool Curtir(ClaimsPrincipal user, string idUsuarioCurtido)
+		public LikeResultViewModel Curtir(ClaimsPrincipal user, string idUsuarioCurtido)
 		{
 			var idUsuario = _userManager.GetUserId(user);
 
-			_curtidaRepository.Add(new Curtida
+			var curtida = _curtidaRepository.GetById(idUsuario, idUsuarioCurtido);
+			var existeCurtida = curtida != null;
+
+			if (existeCurtida)
 			{
-				UsuarioId = idUsuario,
-				UsuarioCurtidoId = idUsuarioCurtido,
-				Data = DateTime.Now
-			});
-			
+				_curtidaRepository.Remove(curtida);
+			}
+			else
+			{
+				_curtidaRepository.Add(new Curtida
+				{
+					UsuarioId = idUsuario,
+					UsuarioCurtidoId = idUsuarioCurtido,
+					Data = DateTime.Now
+				});
+			}
+
 			var match = _curtidaRepository.GetById(idUsuarioCurtido, idUsuario);
 
-			return match != null;
+			var likeResult = new LikeResultViewModel
+			{
+				Liked = !existeCurtida,
+				Match = match != null
+			};
+
+			return likeResult;
 		}
 
 		public IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas()

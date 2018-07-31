@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Bogus;
-using FindU.Application.Extensions;
+using Bogus.DataSets;
 using FindU.Application.Interfaces;
 using FindU.Infra.Data.Identity.Configuration;
 using FindU.Infra.Data.Identity.Models;
@@ -59,9 +59,9 @@ namespace FindU.Application.Test
 				.RuleFor(x => x.CursoId, y => y.PickRandom(cursos.Select(x => x.Id)))
 				.RuleFor(x => x.AnoIngresso, y => y.Date.Past(10).Year)
 				.RuleFor(x => x.Genero, y => y.PickRandom<Genero>())
-				.RuleFor(x => x.Nome, (f, u) => f.Name.FirstName())
+				.RuleFor(x => x.Nome, (f, u) => f.Name.FirstName(GetBogusGender(u.Genero)))
 				.RuleFor(x => x.Sobrenome, y => y.Name.LastName())
-				.RuleFor(x => x.CaminhoFoto, y => y.Image.People())
+				.RuleFor(x => x.CaminhoFoto, (f, u) => f.Image.People(GetBogusGender(u.Genero)))
 				.RuleFor(x => x.DataNascimento,
 					y => y.Date.Between(new DateTime(1980, 01, 01), new DateTime(1990, 01, 01)))
 				.RuleFor(x => x.Descricao, y => y.Lorem.Text())
@@ -83,6 +83,7 @@ namespace FindU.Application.Test
 				foreach (var estudante in estudantes)
 				{
 					ApplicationUser user = null;
+					//Task<string> savePhotoTask = null;
 
 					async void Action1()
 					{
@@ -91,12 +92,17 @@ namespace FindU.Application.Test
 
 						user = userFaker.Generate();
 
+						//savePhotoTask = Task.Run(() => estudanteAppService.SavePhotoAsync(user.Email, estudante.CaminhoFoto));
+
 						await userManager.CreateAsync(user);
 					}
 
 					void Action2()
 					{
 						estudante.UsuarioId = user.Id;
+						estudanteAppService.Add(estudante);
+						estudante.CaminhoFoto = $"{estudante.CaminhoFoto}?lock={estudante.Id}";
+						//estudante.CaminhoFoto = await savePhotoTask;
 					}
 
 					actions.Add(Action1);
@@ -105,10 +111,15 @@ namespace FindU.Application.Test
 
 				await ForEachAsync(actions);
 
-				estudanteAppService.Add(estudantes);
+				estudanteAppService.Update(estudantes);
 
 				scope.Complete();
 			}
+		}
+
+		private static Name.Gender GetBogusGender(Genero genero)
+		{
+			return genero == Genero.Masculino ? Name.Gender.Male : Name.Gender.Female;
 		}
 
 		private static async Task ForEachAsync(IEnumerable<Action> enumerable)

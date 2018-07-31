@@ -7,7 +7,7 @@
 <hr />
 
 <form asp-action="Roll" method="post">
-	<input id="idUsuario" type="hidden" asp-for="UsuarioId" />
+	<input id="idUsuario" type="hidden" asp-for="UsuarioId" value="@Model.UsuarioId" />
 
 	@for (var i = 0; i < Model.UsuariosDescartados.Count; i++)
 	{
@@ -20,14 +20,15 @@
 			<div class="form-group">
 				<img src="@Model.CaminhoFoto" alt="User picture" class="img-responsive img-circle center-block" />
 			</div>
-			<div class="text-center">
-				<div class="form-group">
+			<div class="form-group">
+				<div class="text-center">
 					<a id="btnCurtir" role="button" class="btn btn-danger">
 						<span class="glyphicon glyphicon-heart"></span> Curtir
 					</a>
 					<button type="submit" class="btn btn-default">Próximo</button>
 				</div>
 			</div>
+			<div class="heart hidden"></div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
@@ -38,14 +39,20 @@
 				<label asp-for="@Model.Descricao" class="control-label"></label>
 				<p class="form-control-static text-justify">@Model.Descricao</p>
 			</div>
-			<div class="form-group">
-				<label asp-for="@Model.OrientacaoPolitica" class="control-label"></label>
-				<p class="form-control-static">@Model.OrientacaoPolitica</p>
-			</div>
-			<div class="form-group">
-				<label asp-for="@Model.TipoDeConsumoBebida" class="control-label"></label>
-				<p class="form-control-static">@Model.TipoDeConsumoBebida</p>
-			</div>
+			@if (!string.IsNullOrEmpty(Model.OrientacaoPolitica))
+			{
+				<div class="form-group">
+					<label asp-for="@Model.OrientacaoPolitica" class="control-label"></label>
+					<p class="form-control-static">@Model.OrientacaoPolitica</p>
+				</div>
+			}
+			@if (!string.IsNullOrEmpty(Model.TipoDeConsumoBebida))
+			{
+				<div class="form-group">
+					<label asp-for="@Model.TipoDeConsumoBebida" class="control-label"></label>
+					<p class="form-control-static">@Model.TipoDeConsumoBebida</p>
+				</div>
+			}
 		</div>
 		<div class="col-md-4 col-md-offset-1">
 			<div class="form-group">
@@ -92,21 +99,21 @@
 
 @section Scripts {
 	<script>
-		$(function () {
-			$("#btnCurtir").on("click", function () {
-				const idUsuario = $("#idUsuario").val();
+		$("#btnCurtir").on("click", function () {
+			var idUsuario = $("#idUsuario").val();
 
-				$.ajax({
-					url: "/Estudante/Like",
-					data: { idUsuario },
-					type: "POST",
-					datatype: "json",
-					success: function (data) {
-						if (data) {
-							$("#match-modal").modal();
-						}
+			$.ajax({
+				url: "/Estudante/Like",
+				data: { idUsuario },
+				type: "POST",
+				datatype: "json",
+				success: function (result) {
+					$(".heart").toggleClass("hidden", !result.liked);
+
+					if (result.match) {
+						$("#match-modal").modal();
 					}
-				});
+				}
 			});
 		});
 	</script>

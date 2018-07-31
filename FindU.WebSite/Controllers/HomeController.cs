@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using FindU.Application.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindU.WebSite.Controllers
@@ -9,6 +8,11 @@ namespace FindU.WebSite.Controllers
 	{
 		public IActionResult Index()
 		{
+			if (User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction(nameof(EstudanteController.Roll), "Estudante");
+			}
+
 			return View();
 		}
 

@@ -20,6 +20,7 @@ namespace FindU.Application.ViewModels
 	    public string AreaConhecimento { get; set; }
 	    [Display(Name = "Na UFBA desde")]
 		public int AnoIngresso { get; set; }
+		[HiddenInput]
 	    public string UsuarioId { get; set; }
 		public List<string> UsuariosDescartados { get; set; } = new List<string>();
 	}

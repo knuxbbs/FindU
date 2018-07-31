@@ -11,8 +11,10 @@ namespace FindU.Application.Interfaces
 	public interface IEstudanteAppService : IAppServiceBase<Estudante>
 	{
 		Task<Estudante> Add(ExternalLoginViewModel model, ExternalLoginInfo info);
+		string SavePhoto(string emailUsuario, string photoUrl);
+		Task<string> SavePhotoAsync(string emailUsuario, string photoUrl);
 		EstudanteRollViewModel ObterEstudante(ClaimsPrincipal user, EstudanteRollViewModel previousViewModel = null);
-		bool Curtir(ClaimsPrincipal user, string idUsuarioCurtido);
+		LikeResultViewModel Curtir(ClaimsPrincipal user, string idUsuarioCurtido);
 		IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas();
 		IEnumerable<TipoDeAtracao> ListarTiposDeAtracao();
 		IEnumerable<TipoDeConsumoBebida> ListarTiposDeConsumoBebida();

@@ -22,5 +22,10 @@ namespace FindU.Infra.Data.Repositories
 		{
 			return DbSet.Where(x => x.Genero == genero);
 		}
+
+		public IQueryable<Estudante> ListarPorGenero(Genero genero, OrientacaoSexual orientacaoSexual)
+		{
+			return DbSet.Where(x => x.Genero == genero && x.OrientacaoSexual == orientacaoSexual);
+		}
 	}
 }

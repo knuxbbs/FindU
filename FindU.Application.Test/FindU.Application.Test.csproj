@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="22.3.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Bogus-master\Source\Bogus\Bogus.csproj" />
     <ProjectReference Include="..\FindU.Application\FindU.Application.csproj" />
     <ProjectReference Include="..\FindU.Infra.IoC\FindU.Infra.IoC.csproj" />
     <ProjectReference Include="..\FindU.WebSite\FindU.WebSite.csproj" />
