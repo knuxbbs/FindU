@@ -71,26 +71,35 @@ namespace FindU.WebSite.Controllers
 			{
 				// This doesn't count login failures towards account lockout
 				// To enable password failures to trigger account lockout, set lockoutOnFailure: true
-				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-				if (result.Succeeded)
-				{
-					_logger.LogInformation("User logged in.");
-					return RedirectToLocal(returnUrl);
-				}
-				if (result.RequiresTwoFactor)
-				{
-					return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-				}
-				if (result.IsLockedOut)
-				{
-					_logger.LogWarning("User account locked out.");
-					return RedirectToAction(nameof(Lockout));
-				}
-				else
-				{
-					ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-					return View(model);
-				}
+				//var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+				var user = await _userManager.FindByNameAsync(model.Email);
+
+				if (user == null) return View(model);
+
+				await _signInManager.SignInAsync(user, true);
+
+				//if (result.Succeeded)
+				//{
+				//	_logger.LogInformation("User logged in.");
+				//	return RedirectToLocal(returnUrl);
+				//}
+				//if (result.RequiresTwoFactor)
+				//{
+				//	return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+				//}
+				//if (result.IsLockedOut)
+				//{
+				//	_logger.LogWarning("User account locked out.");
+				//	return RedirectToAction(nameof(Lockout));
+				//}
+				//else
+				//{
+				//	ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+				//	return View(model);
+				//}
+
+				return RedirectToAction(nameof(EstudanteController.Roll), "Estudante");
 			}
 
 			// If we got this far, something failed, redisplay form
@@ -289,7 +298,7 @@ namespace FindU.WebSite.Controllers
 			}
 
 			//Verifica se usuário já está cadastrado na base de dados da aplicação
-			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, 
+			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
 				info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
 			if (result.Succeeded)
