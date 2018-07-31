@@ -88,7 +88,8 @@ namespace FindU.Application.Test
 					async void Action1()
 					{
 						var userFaker = new Faker<ApplicationUser>()
-							.RuleFor(c => c.UserName, y => y.Internet.Email(estudante.Nome, estudante.Sobrenome, "ufba.br"));
+							.RuleFor(c => c.UserName, y => y.Internet.Email(estudante.Nome, estudante.Sobrenome, "ufba.br"))
+							.RuleFor(c => c.PhoneNumber, y => y.Phone.PhoneNumber("(##) ####-####"));
 
 						user = userFaker.Generate();
 

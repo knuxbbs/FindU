@@ -37,5 +37,19 @@ namespace FindU.WebSite.Controllers
 
 			return Json(likeResult);
 		}
+
+		public IActionResult Details(string idUsuario)
+		{
+			var estudanteDetailsViewModel = _estudanteAppService.ObterEstudanteCorrespondido(User, idUsuario);
+
+			return View("MatchModal", estudanteDetailsViewModel);
+		}
+
+		public IActionResult Matches(string idUsuario)
+		{
+			var estudanteDetailsViewModel = _estudanteAppService.ListarEstudantesCorrespondidos(User);
+
+			return View("MatchList", estudanteDetailsViewModel);
+		}
 	}
 }

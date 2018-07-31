@@ -15,6 +15,8 @@ namespace FindU.Application.Interfaces
 		Task<string> SavePhotoAsync(string emailUsuario, string photoUrl);
 		EstudanteRollViewModel ObterEstudante(ClaimsPrincipal user, EstudanteRollViewModel previousViewModel = null);
 		LikeResultViewModel Curtir(ClaimsPrincipal user, string idUsuarioCurtido);
+		EstudanteDetailsViewModel ObterEstudanteCorrespondido(ClaimsPrincipal user, string idUsuarioCurtido);
+		IEnumerable<EstudanteDetailsViewModel> ListarEstudantesCorrespondidos(ClaimsPrincipal user);
 		IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas();
 		IEnumerable<TipoDeAtracao> ListarTiposDeAtracao();
 		IEnumerable<TipoDeConsumoBebida> ListarTiposDeConsumoBebida();

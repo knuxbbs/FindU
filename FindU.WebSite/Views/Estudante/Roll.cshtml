@@ -6,7 +6,7 @@
 <h2>@ViewData["Title"]</h2>
 <hr />
 
-<form asp-action="Roll" method="post">
+<form id="roll-form" asp-action="Roll" method="post">
 	<input id="idUsuario" type="hidden" asp-for="UsuarioId" value="@Model.UsuarioId" />
 
 	@for (var i = 0; i < Model.UsuariosDescartados.Count; i++)
@@ -81,40 +81,43 @@
 	</div>
 </form>
 
-<div id="match-modal" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			</div>
-			<div class="modal-body">
-				<p>Match!</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<div id="match-modal"></div>
 
 @section Scripts {
 	<script>
-		$("#btnCurtir").on("click", function () {
-			var idUsuario = $("#idUsuario").val();
+		$("#btnCurtir").on("click",
+			function() {
+				const idUsuario = $("#idUsuario").val();
 
-			$.ajax({
-				url: "/Estudante/Like",
-				data: { idUsuario },
-				type: "POST",
-				datatype: "json",
-				success: function (result) {
-					$(".heart").toggleClass("hidden", !result.liked);
+				$.ajax({
+					url: "/Estudante/Like",
+					data: { idUsuario },
+					type: "POST",
+					datatype: "json",
+					success: function(result) {
+						$(".heart").toggleClass("hidden", !result.liked);
 
-					if (result.match) {
-						$("#match-modal").modal();
+						if (result.match) {
+							$.ajax({
+								url: "/Estudante/Details",
+								data: { idUsuario },
+								type: "POST",
+								datatype: "json",
+								success: function (data) {
+									if (data) {
+										$("#match-modal").replaceWith(data);
+										$("#match-modal").modal();
+										$('#match-modal').on('hidden.bs.modal', submit);
+									}
+								}
+							});
+						}
 					}
-				}
+				});
 			});
-		});
+
+		function submit() {
+			$("#roll-form").submit();
+		}
 	</script>
 }

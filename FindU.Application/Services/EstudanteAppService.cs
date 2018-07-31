@@ -273,6 +273,43 @@ namespace FindU.Application.Services
 			return likeResult;
 		}
 
+		public EstudanteDetailsViewModel ObterEstudanteCorrespondido(ClaimsPrincipal user, string idUsuarioCurtido)
+		{
+			var idUsuario = _userManager.GetUserId(user);
+
+			var match = _curtidaRepository.GetById(idUsuarioCurtido, idUsuario);
+
+			if (match == null) return null;
+
+			var estudante = _estudanteRepository.ObterPorUsuario(idUsuarioCurtido);
+
+			return new EstudanteDetailsViewModel
+			{
+				Nome = $"{estudante.Nome} {estudante.Sobrenome}",
+				Curso = estudante.Curso.Nome,
+				PhoneNumber = estudante.Usuario.PhoneNumber,
+				UsuarioId = estudante.UsuarioId
+			};
+		}
+
+		public IEnumerable<EstudanteDetailsViewModel> ListarEstudantesCorrespondidos(ClaimsPrincipal user)
+		{
+			var idUsuario = _userManager.GetUserId(user);
+
+			var matches = _curtidaRepository.ObterMatchesPorUsuario(idUsuario);
+
+			return matches.Select(match => _estudanteRepository.ObterPorUsuario(match.UsuarioId))
+				.Select(estudanteCorrespondido => new EstudanteDetailsViewModel
+				{
+					Nome = $"{estudanteCorrespondido.Nome} {estudanteCorrespondido.Sobrenome}",
+					Curso = estudanteCorrespondido.Curso.Nome,
+					PhoneNumber = estudanteCorrespondido.Usuario.PhoneNumber,
+					UsuarioId = estudanteCorrespondido.UsuarioId,
+					Facebook = $"www.facebook.com/{estudanteCorrespondido.UsuarioId}",
+				})
+				.ToList();
+		}
+
 		public IEnumerable<OrientacaoPolitica> ListarOrientacoesPoliticas()
 		{
 			return _orientacaoPoliticaRepository.GetAll();

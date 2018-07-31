@@ -6,6 +6,12 @@
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">@Model.UserName</a>
 			<ul class="dropdown-menu">
 				<li>
+					<a asp-controller="Estudante" asp-action="Matches" title="Matches">
+						<span class="glyphicon glyphicon-heart"></span>
+						Matches
+					</a>
+				</li>
+				<li>
 					<a asp-controller="Manage" asp-action="Index" title="Configurações">
 						<span class="glyphicon glyphicon-cog"></span>
 						Configurações
