@@ -210,6 +210,13 @@ namespace FindU.Application.Services
 				listaEstudantes = listaEstudantes.Where(x => !previousViewModel.UsuariosDescartados.Contains(x.UsuarioId));
 			}
 
+			var matches = _curtidaRepository.ObterMatchesPorUsuario(idUsuario);
+
+			if (matches != null)
+			{
+				
+			}
+
 			if (!listaEstudantes.Any()) return null;
 
 			var random = new Random();

@@ -1,0 +1,3 @@
+[submodule "Bogus"]
+	path = Bogus
+	url = https://github.com/knuxbbs/Bogus.git

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Bogus-master\Source\Bogus\Bogus.csproj" />
+    <ProjectReference Include="..\Bogus\Source\Bogus\Bogus.csproj" />
     <ProjectReference Include="..\FindU.Application\FindU.Application.csproj" />
     <ProjectReference Include="..\FindU.Infra.IoC\FindU.Infra.IoC.csproj" />
     <ProjectReference Include="..\FindU.WebSite\FindU.WebSite.csproj" />
